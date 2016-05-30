@@ -2,9 +2,8 @@ package com.proyectofinal.smartvendingmachine;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 public class LoginMainActivity extends AppCompatActivity {
-
+//Comentario de prueba para el commit.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
