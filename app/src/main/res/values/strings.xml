@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">SmartVendingMachine</string>
+    <string name="app_name">Smart Vending Machine</string>
+    <string name="Bienvenidos">Bienvenidos</string>
+    <string name="IngreseDNI">Ingrese DNI</string>
+    <string name="Ingresar">Ingresar</string>
 </resources>
