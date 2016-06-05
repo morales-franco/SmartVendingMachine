@@ -3,4 +3,8 @@
     <string name="Bienvenidos">Bienvenidos</string>
     <string name="IngreseDNI">Ingrese DNI</string>
     <string name="Ingresar">Ingresar</string>
+    <string name="title_activity_main_menu">Menu Principal</string>
+    <string name="title_activity_user_historty">Historial Compras</string>
+    <string name="title_activity_user_account">Mi Cuenta</string>
+    <string name="title_activity_begin_purchase">Ejecutando Compra</string>
 </resources>

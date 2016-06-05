@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.proyectofinal.smartvendingmachine.LoginMainActivity">
+    tools:context=".ui.LoginMainActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -20,13 +20,14 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/editText2"
-        android:hint="@string/IngreseDNI"/>
+        android:id="@+id/documentEditText"
+        android:hint="@string/IngreseDNI"
+        android:editable="false"/>
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/Ingresar"
-        android:id="@+id/button" />
+        android:id="@+id/loginButton" />
 
 </LinearLayout>

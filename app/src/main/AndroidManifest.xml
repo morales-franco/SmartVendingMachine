@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.proyectofinal.smartvendingmachine">
+          package="com.proyectofinal.smartvendingmachine">
 
     <application
         android:allowBackup="true"
@@ -8,12 +8,44 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginMainActivity">
+        <activity android:name=".ui.LoginMainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.MainMenuActivity"
+            android:label="@string/title_activity_main_menu"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".ui.UserHistortyActivity"
+            android:label="@string/title_activity_user_historty"
+            android:parentActivityName=".ui.MainMenuActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.proyectofinal.smartvendingmachine.ui.MainMenuActivity"/>
+        </activity>
+        <activity
+            android:name=".ui.UserAccountActivity"
+            android:label="@string/title_activity_user_account"
+            android:parentActivityName=".ui.MainMenuActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.proyectofinal.smartvendingmachine.ui.MainMenuActivity"/>
+        </activity>
+        <activity
+            android:name=".ui.BeginPurchaseActivity"
+            android:label="@string/title_activity_begin_purchase"
+            android:parentActivityName=".ui.MainMenuActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.proyectofinal.smartvendingmachine.ui.MainMenuActivity"/>
         </activity>
     </application>
 
