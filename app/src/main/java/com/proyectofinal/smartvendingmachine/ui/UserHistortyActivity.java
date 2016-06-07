@@ -8,6 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.proyectofinal.smartvendingmachine.R;
+import com.proyectofinal.smartvendingmachine.business.CompraBusiness;
+import com.proyectofinal.smartvendingmachine.models.Compra;
+
+import java.util.List;
 
 public class UserHistortyActivity extends AppCompatActivity {
 
@@ -17,6 +21,8 @@ public class UserHistortyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_historty);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+       // List<Compra> compras = new CompraBusiness().GetList();
 
     }
 
