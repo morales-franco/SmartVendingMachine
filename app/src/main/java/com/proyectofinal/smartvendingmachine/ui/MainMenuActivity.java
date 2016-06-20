@@ -25,16 +25,8 @@ public class MainMenuActivity extends AppCompatActivity {
 //      Intent intent = getIntent();
 //      mName  = intent.getStringExtra(getString(R.string.key_name));
 
-        mUserAccountButton = (Button) findViewById(R.id.userAccountButton);
         mUserHistoryButton = (Button) findViewById(R.id.userHistoryButton);
         mBeginPurchaseButton = (Button) findViewById(R.id.beginPurchaseButton);
-
-        mUserAccountButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startUserAccountActivity();
-            }
-        });
 
         mUserHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,12 +42,6 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
 
-    }
-    private void startUserAccountActivity(){
-        Intent intent = new Intent(this, UserAccountActivity.class);
-        //TODO: Aca se mandarian los extra que haya que mandarle a la main activity
-        //intent.putExtra(getString(R.string.key_name),name);
-        startActivity(intent);
     }
 
     private void startUserHistoryActivity(){

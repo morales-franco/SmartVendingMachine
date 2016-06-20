@@ -30,15 +30,6 @@
                 android:value="com.proyectofinal.smartvendingmachine.ui.MainMenuActivity"/>
         </activity>
         <activity
-            android:name=".ui.UserAccountActivity"
-            android:label="@string/title_activity_user_account"
-            android:parentActivityName=".ui.MainMenuActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.proyectofinal.smartvendingmachine.ui.MainMenuActivity"/>
-        </activity>
-        <activity
             android:name=".ui.BeginPurchaseActivity"
             android:label="@string/title_activity_begin_purchase"
             android:parentActivityName=".ui.MainMenuActivity"
