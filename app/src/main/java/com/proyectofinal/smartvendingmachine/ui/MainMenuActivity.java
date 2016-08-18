@@ -1,32 +1,33 @@
 package com.proyectofinal.smartvendingmachine.ui;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
 import com.proyectofinal.smartvendingmachine.R;
 
 public class MainMenuActivity extends AppCompatActivity {
-    private Button mUserAccountButton;
-    private Button mUserHistoryButton;
-    private Button mBeginPurchaseButton;
+
+    @BindView(R.id.userHistoryButton) Button mUserHistoryButton;
+    @BindView(R.id.beginPurchaseButton) Button mBeginPurchaseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        ButterKnife.bind(this);
+
 //      TODO: Aca habria que cargar los intetent con algo asi como lo que esta abajo:
 //      Intent intent = getIntent();
 //      mName  = intent.getStringExtra(getString(R.string.key_name));
 
-        mUserHistoryButton = (Button) findViewById(R.id.userHistoryButton);
-        mBeginPurchaseButton = (Button) findViewById(R.id.beginPurchaseButton);
+ //       mUserHistoryButton = (Button) findViewById(R.id.userHistoryButton);
+ //       mBeginPurchaseButton = (Button) findViewById(R.id.beginPurchaseButton);
 
         mUserHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +53,7 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void startBeginPurchaseActivity(){
-        Intent intent = new Intent(this, BeginPurchaseActivity.class);
+        Intent intent = new Intent(this, ConnectDeviceActivity.class);
         //TODO: Aca se mandarian los extra que haya que mandarle a la main activity
         //intent.putExtra(getString(R.string.key_name),name);
         startActivity(intent);

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.proyectofinal.smartvendingmachine">
 
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -30,13 +33,19 @@
                 android:value="com.proyectofinal.smartvendingmachine.ui.MainMenuActivity"/>
         </activity>
         <activity
-            android:name=".ui.BeginPurchaseActivity"
+            android:name=".ui.ConnectDeviceActivity"
             android:label="@string/title_activity_begin_purchase"
             android:parentActivityName=".ui.MainMenuActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.proyectofinal.smartvendingmachine.ui.MainMenuActivity"/>
+        </activity>
+        <activity android:name=".ui.connection.ManageBondedDevicesActivity">
+        </activity>
+        <activity android:name=".ui.connection.SelectDeviceToConnectActivity">
+        </activity>
+        <activity android:name=".ui.connection.BeginPurchaseActivity">
         </activity>
     </application>
 
