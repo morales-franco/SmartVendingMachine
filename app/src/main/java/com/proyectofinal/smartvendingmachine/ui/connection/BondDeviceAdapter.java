@@ -63,7 +63,7 @@ public class BondDeviceAdapter extends BaseAdapter{
 
         holder.deviceNameTextView.setText(device.getName());
         holder.deviceAddressTextView.setText(device.getAddress());
-        holder.bondButton.setText((device.getBondState() == BluetoothDevice.BOND_BONDED) ? "Unpair" : "Pair");
+        holder.bondButton.setText((device.getBondState() == BluetoothDevice.BOND_BONDED) ? "Desconectar" : "Sincronizar");
         holder.bondButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

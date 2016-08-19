@@ -25,4 +25,15 @@
     <string name="list_item_text_pair">Sincronizar</string>
     <string name="list_item_default_address">000000000</string>
     <string name="list_item_default_device_name">Galaxy Nexus</string>
+    <string name="cancel_discovery">Cancelar</string>
+    <string name="discovery_dialog_message">Escaneando...</string>
+    <string name="no_devices_available_message">No hay dispositivos Bluetooth disponibles en este momento.</string>
+    <string name="bluetooth_unsopported_message">Lamentablemente su dispositivo no soporta Bluetooth.</string>
+    <string name="bluetooth_on">Bluetooth Encendido</string>
+    <string name="bluetooth_disable">Desactivar</string>
+    <string name="bluetooth_off">Bluetooth Apagado</string>
+    <string name="bluetooth_enable">Activar</string>
+    <string name="pair_device_first_message">Por favor, primero debe sincronizar el dispositivo.</string>
+    <string name="connection_opened_message">\nConnection Opened!\n</string>
+    <string name="connection_closed_message">\nConnection Closed!\n</string>
 </resources>

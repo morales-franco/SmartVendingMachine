@@ -28,8 +28,8 @@ import butterknife.ButterKnife;
 
 public class ConnectDeviceActivity extends AppCompatActivity {
 
-    private ArrayList<BluetoothDevice> mBondedBluetoothDeviceList = new ArrayList<BluetoothDevice>();
-    private ArrayList<BluetoothDevice> mAvailableBluetoothDeviceList = new ArrayList<BluetoothDevice>();
+    private ArrayList<BluetoothDevice> mBondedBluetoothDeviceList = new ArrayList<>();
+    private ArrayList<BluetoothDevice> mAvailableBluetoothDeviceList = new ArrayList<>();
 
     private BluetoothAdapter mBluetoothAdapter;
 
@@ -63,9 +63,9 @@ public class ConnectDeviceActivity extends AppCompatActivity {
         //TODO cambiar el progressDialog por algo mas cheto.
         mProgressDialog = new ProgressDialog(this);
 
-        mProgressDialog.setMessage("Escaneando...");
+        mProgressDialog.setMessage(getString(R.string.discovery_dialog_message));
         mProgressDialog.setCancelable(false);
-        mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", new DialogInterface.OnClickListener() {
+        mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel_discovery), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -92,7 +92,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
 
                     if ( (mAvailableBluetoothDeviceList == null || mAvailableBluetoothDeviceList.size() == 0) &&
                          (bondedDevices == null || bondedDevices.size() == 0)){
-                        showToast("No hay dispositivos Bluetooth disponibles en este momento.");
+                        showToast(getString(R.string.no_devices_available_message));
                     }else{
                         startBondDeviceActivity(bondedDevices);
                     }
@@ -163,7 +163,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
     }
 
     private void showUnsupported() {
-        mStatusBluetoothTextView.setText("Lamentablemente su dispositivo no soporta Bluetooth.");
+        mStatusBluetoothTextView.setText(R.string.bluetooth_unsopported_message);
         //TODO: QUE HACEMOS ACA? SALIR DE LA APLICACION?
         //mActivateBtn.setText("Enable");
         //mActivateBtn.setEnabled(false);
@@ -173,10 +173,10 @@ public class ConnectDeviceActivity extends AppCompatActivity {
     }
 
     private void showEnabled() {
-        mStatusBluetoothTextView.setText("Bluetooth Encendido");
+        mStatusBluetoothTextView.setText(R.string.bluetooth_on);
         mStatusBluetoothTextView.setTextColor(Color.BLUE);
 
-        mEnableBluetoothButton.setText("Desactivar");
+        mEnableBluetoothButton.setText(R.string.bluetooth_disable);
         mEnableBluetoothButton.setEnabled(true);
 
         //mPairedBtn.setEnabled(true);
@@ -185,10 +185,10 @@ public class ConnectDeviceActivity extends AppCompatActivity {
     }
 
     private void showDisabled() {
-        mStatusBluetoothTextView.setText("Bluetooth Apagado");
+        mStatusBluetoothTextView.setText(R.string.bluetooth_off);
         mStatusBluetoothTextView.setTextColor(Color.RED);
 
-        mEnableBluetoothButton.setText("Activar");
+        mEnableBluetoothButton.setText(R.string.bluetooth_enable);
         mEnableBluetoothButton.setEnabled(true);
 
         //mPairedBtn.setEnabled(false);
@@ -215,7 +215,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
 
                 if (state == BluetoothAdapter.STATE_ON) {
 
-                    showToast("Activado");
+                    showToast(getString(R.string.bluetooth_on));
                     showEnabled();
 
                 }
@@ -232,7 +232,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
 
                 if (mAvailableBluetoothDeviceList.size() <= 0) {
 
-                    showToast("No hay dispositivos BT disponibles");
+                    showToast(getString(R.string.no_devices_available_message));
 
                 }else if(mBondedBluetoothDeviceList.size() > 0) {
 
@@ -242,7 +242,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
 
                 }else if (mBondedBluetoothDeviceList.size() <= 0 && mAvailableBluetoothDeviceList.size() > 0){
 
-                    showToast("Nuevos dispositivos no sincronizados disponinbles. Abriendo menu de sincronizacion");
+                    showToast("Nuevos dispositivos no sincronizados disponibles. Abriendo menu de sincronización");
                     startBondDeviceActivity(mBluetoothAdapter.getBondedDevices());
 
                 }
@@ -255,7 +255,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
 
                     mBondedBluetoothDeviceList.add(device);
-                    showToast("Found device bonded" + device.getName());
+                    showToast("Found device already bonded " + device.getName());
 
                 }
                 mAvailableBluetoothDeviceList.add(device);
