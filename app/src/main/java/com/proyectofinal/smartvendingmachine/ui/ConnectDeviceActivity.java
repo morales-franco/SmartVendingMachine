@@ -35,15 +35,15 @@ public class ConnectDeviceActivity extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
 
-    private TextView mStatusBluetoothTextView;
-    private Button mEnableBluetoothButton;
-    private Button mScanBluetoothDevicesButton;
-    private Button mBondBluetoothDevicesButton;
-//    @BindView(R.id.userHistoryButton) Button mUserHistoryButton;
-//    @BindView(R.id.statusBluetoothTextView) TextView mStatusBluetoothTextView;
-//    @BindView(R.id.btn_enable) Button mEnableBluetoothButton;
-//    @BindView(R.id.scanBluetoothDevicesButton) Button mScanBluetoothDevicesButton;//scan
-//    @BindView(R.id.bondBluetoothDevicesButton) Button mBondBluetoothDevicesButton;//sincronizar
+//    private TextView mStatusBluetoothTextView;
+//    private Button mEnableBluetoothButton;
+//    private Button mScanBluetoothDevicesButton;
+//    private Button mBondBluetoothDevicesButton;
+
+    @BindView(R.id.statusBluetoothTextView) TextView mStatusBluetoothTextView;
+    @BindView(R.id.enableBluetoothButton) Button mEnableBluetoothButton;
+    @BindView(R.id.scanBluetoothDevicesButton) Button mScanBluetoothDevicesButton;//scan
+    @BindView(R.id.bondBluetoothDevicesButton) Button mBondBluetoothDevicesButton;//sincronizar
 
 
     @Override
@@ -51,12 +51,13 @@ public class ConnectDeviceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_connect_device);
+        ButterKnife.bind(this);
 
-        mStatusBluetoothTextView = (TextView) findViewById(R.id.statusBluetoothTextView);
-        mEnableBluetoothButton = (Button) findViewById(R.id.btn_enable);
-        mScanBluetoothDevicesButton = (Button) findViewById(R.id.scanBluetoothDevicesButton);
-        mBondBluetoothDevicesButton = (Button) findViewById(R.id.bondBluetoothDevicesButton);
-
+//        mStatusBluetoothTextView = (TextView) findViewById(R.id.statusBluetoothTextView);
+//        mEnableBluetoothButton = (Button) findViewById(R.id.btn_enable);
+//        mScanBluetoothDevicesButton = (Button) findViewById(R.id.scanBluetoothDevicesButton);
+//        mBondBluetoothDevicesButton = (Button) findViewById(R.id.bondBluetoothDevicesButton);
+//
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         //TODO cambiar el progressDialog por algo mas cheto.

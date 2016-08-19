@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class BeginPurchaseActivity extends AppCompatActivity {
+    //Todo estas direcciones harcodeadas no irian.
     private String DEVICE_ADDRESS="20:16:03:08:52:53";
     private UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
     private BluetoothDevice device;
@@ -137,10 +138,8 @@ public class BeginPurchaseActivity extends AppCompatActivity {
     public void onClickStart(View view) {
         if(BTinit())
         {
-            Toast.makeText(getApplicationContext(),"Entro a CLick Start",Toast.LENGTH_SHORT).show();
             if(BTconnect())
             {
-                Toast.makeText(getApplicationContext(),"Entro 2",Toast.LENGTH_SHORT).show();
                 setUiEnabled(true);
                 deviceConnected=true;
                 beginListenForData();

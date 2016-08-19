@@ -46,13 +46,13 @@ public class ConnectDeviceAdapter extends BaseAdapter {
         ViewHolder holder;
 
         if (convertView == null) {
-            convertView			=  mInflater.inflate(R.layout.list_item_bond_device, null);
+            convertView			=  mInflater.inflate(R.layout.list_item_manage_device, null);
 
             holder 				= new ViewHolder();
 
-            holder.nameTv		= (TextView) convertView.findViewById(R.id.tv_name);
-            holder.addressTv 	= (TextView) convertView.findViewById(R.id.tv_address);
-            holder.pairBtn		= (Button) convertView.findViewById(R.id.btn_pair);
+            holder.deviceNameTextView = (TextView) convertView.findViewById(R.id.deviceNameTextView);
+            holder.deviceAddressTextView = (TextView) convertView.findViewById(R.id.deviceAddressTextView);
+            holder.connectButton = (Button) convertView.findViewById(R.id.bondDeviceButton);
 
             convertView.setTag(holder);
         } else {
@@ -61,10 +61,10 @@ public class ConnectDeviceAdapter extends BaseAdapter {
 
         BluetoothDevice device	= mData.get(position);
 
-        holder.nameTv.setText(device.getName());
-        holder.addressTv.setText(device.getAddress());
-        holder.pairBtn.setText((device.getBondState() == BluetoothDevice.BOND_BONDED) ? "Conectar" : "Conectar");
-        holder.pairBtn.setOnClickListener(new View.OnClickListener() {
+        holder.deviceNameTextView.setText(device.getName());
+        holder.deviceAddressTextView.setText(device.getAddress());
+        holder.connectButton.setText("Conectar");
+        holder.connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
@@ -77,9 +77,9 @@ public class ConnectDeviceAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        TextView nameTv;
-        TextView addressTv;
-        TextView pairBtn;
+        TextView deviceNameTextView;
+        TextView deviceAddressTextView;
+        TextView connectButton;
     }
 
     public interface OnPairButtonClickListener {

@@ -22,5 +22,7 @@
     <string name="text_list_paired_devices">Dispositivos sincronizados</string>
     <string name="text_list_devices">Lista de Dispositivos</string>
 
-    <string name="text_pair">Pair</string>
+    <string name="list_item_text_pair">Sincronizar</string>
+    <string name="list_item_default_address">000000000</string>
+    <string name="list_item_default_device_name">Galaxy Nexus</string>
 </resources>
