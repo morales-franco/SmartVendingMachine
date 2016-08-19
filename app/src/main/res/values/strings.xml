@@ -17,7 +17,7 @@
     <string name="text_view_paired">Paired Devices</string>
     <string name="text_scan_devices">Sincronizar Nuevos Dispositivos</string>
     <string name="text_connect_devices">Conectar Dispositivos</string>
-    <string name="text_stop_scan">Scan Devices</string>
+    <string name="text_stop_scan">Escanear dispositivos</string>
 
     <string name="text_list_paired_devices">Dispositivos sincronizados</string>
     <string name="text_list_devices">Lista de Dispositivos</string>
