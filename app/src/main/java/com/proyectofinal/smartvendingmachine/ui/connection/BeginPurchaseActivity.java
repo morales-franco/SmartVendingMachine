@@ -22,9 +22,8 @@ import java.util.Set;
 import java.util.UUID;
 
 public class BeginPurchaseActivity extends AppCompatActivity {
-    //Todo estas direcciones harcodeadas no irian.
-    private String DEVICE_ADDRESS;
-    private UUID PORT_UUID;//Serial Port Service ID
+    private String DEVICE_ADDRESS="20:16:03:08:52:53";
+    private UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
     private BluetoothDevice device;
     private BluetoothSocket socket;
     private OutputStream outputStream;
@@ -143,7 +142,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                 setUiEnabled(true);
                 deviceConnected=true;
                 beginListenForData();
-                textView.append(getString(R.string.connection_opened_message));
+                textView.append("\nConnection Opened!\n");
             }
 
         }
@@ -211,7 +210,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         socket.close();
         setUiEnabled(false);
         deviceConnected=false;
-        textView.append(getString(R.string.connection_closed_message));
+        textView.append("\nConnection Closed!\n");
     }
 
     public void onClickClear(View view) {
