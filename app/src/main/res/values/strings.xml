@@ -15,7 +15,7 @@
     <string name="text_disable">Disable</string>
 
     <string name="text_view_paired">Paired Devices</string>
-    <string name="text_scan_devices">Sincronizar Nuevos Dispositivos</string>
+    <string name="text_scan_devices">Sincronización Dispositivos</string>
     <string name="text_connect_devices">Conectar Dispositivos</string>
     <string name="text_stop_scan">Escanear dispositivos</string>
 
@@ -30,10 +30,11 @@
     <string name="no_devices_available_message">No hay dispositivos Bluetooth disponibles en este momento.</string>
     <string name="bluetooth_unsopported_message">Lamentablemente su dispositivo no soporta Bluetooth.</string>
     <string name="bluetooth_on">Bluetooth Encendido</string>
-    <string name="bluetooth_disable">Desactivar</string>
+    <string name="bluetooth_disable">Desactivar Bluetooth</string>
     <string name="bluetooth_off">Bluetooth Apagado, Enciéndalo</string>
-    <string name="bluetooth_enable">Activar</string>
+    <string name="bluetooth_enable">Activar Bluetooth</string>
     <string name="pair_device_first_message">Por favor, primero debe sincronizar el dispositivo.</string>
     <string name="connection_opened_message">\nConnection Opened!\n</string>
     <string name="connection_closed_message">\nConnection Closed!\n</string>
+    <string name="enable_bluetooth">Encender Bluetooth</string>
 </resources>

@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/activity_vertical_margin">
+    android:weightSum="1"
+    >
+
+    <Switch
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/enable_bluetooth"
+        android:id="@+id/enableBluetoothSwitch"
+        android:layout_below="@+id/statusBluetoothTextView"
+        android:layout_alignParentStart="true"
+        android:background="@color/dim_foreground_disabled_material_dark"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        android:textOff="@string/enable_bluetooth"
+        android:textOn="Desactivar Bluetooth"
+        android:textSize="18sp"
+        android:hint="Active el BY"/>
 
     <TextView
         android:id="@+id/statusBluetoothTextView"
@@ -13,31 +31,38 @@
         android:gravity="center"
         android:textSize="17sp"
         android:textColor="#ff0000"
-        android:text="@string/text_bluetooth_off" />
+        android:text="@string/text_bluetooth_off"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:allowUndo="false"
+        android:background="#80676767"/>
 
-    <Button
-        android:id="@+id/enableBluetoothButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/text_enable" />
-
-    <Button
+    <ImageButton
         android:id="@+id/scanBluetoothDevicesButton"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:enabled="false"
         android:text="@string/text_connect_devices"
-        android:background="#3b9511"/>
+        android:src="@drawable/scan_button"
+        android:layout_marginTop="34dp"
+        android:layout_below="@+id/enableBluetoothSwitch"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/accent_material_light"
+        android:adjustViewBounds="true"
+        />
 
     <Button
         android:id="@+id/bondBluetoothDevicesButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:enabled="false"
         android:text="@string/text_scan_devices"
-        android:background="#676ccb"/>
+        android:background="#676ccb"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
-</LinearLayout>
+</RelativeLayout>

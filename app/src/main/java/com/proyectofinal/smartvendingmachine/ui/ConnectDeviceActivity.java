@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,14 +37,9 @@ public class ConnectDeviceActivity extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
 
-//    private TextView mStatusBluetoothTextView;
-//    private Button mEnableBluetoothButton;
-//    private Button mScanBluetoothDevicesButton;
-//    private Button mBondBluetoothDevicesButton;
-
     @BindView(R.id.statusBluetoothTextView) TextView mStatusBluetoothTextView;
-    @BindView(R.id.enableBluetoothButton) Button mEnableBluetoothButton;
-    @BindView(R.id.scanBluetoothDevicesButton) Button mScanBluetoothDevicesButton;//scan
+    @BindView(R.id.enableBluetoothSwitch) Switch mEnableBluetoothSwitch;
+    @BindView(R.id.scanBluetoothDevicesButton) ImageButton mScanBluetoothDevicesButton;//scan
     @BindView(R.id.bondBluetoothDevicesButton) Button mBondBluetoothDevicesButton;//sincronizar
 
 
@@ -53,11 +50,6 @@ public class ConnectDeviceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connect_device);
         ButterKnife.bind(this);
 
-//        mStatusBluetoothTextView = (TextView) findViewById(R.id.statusBluetoothTextView);
-//        mEnableBluetoothButton = (Button) findViewById(R.id.btn_enable);
-//        mScanBluetoothDevicesButton = (Button) findViewById(R.id.scanBluetoothDevicesButton);
-//        mBondBluetoothDevicesButton = (Button) findViewById(R.id.bondBluetoothDevicesButton);
-//
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         //TODO cambiar el progressDialog por algo mas cheto.
@@ -100,15 +92,31 @@ public class ConnectDeviceActivity extends AppCompatActivity {
                 }
             });
 
-            mEnableBluetoothButton.setOnClickListener(new View.OnClickListener() {
+//            mEnableBluetoothButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (mBluetoothAdapter.isEnabled()){
+//                        mBluetoothAdapter.disable();
+//                        showDisabled();
+//                    }else{
+//                        Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//                        startActivityForResult(intent, 1000);
+//                    }
+//
+//                }
+//            });
+
+            mEnableBluetoothSwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mBluetoothAdapter.isEnabled()){
+                        mStatusBluetoothTextView.animate().translationY(0);
                         mBluetoothAdapter.disable();
                         showDisabled();
                     }else{
                         Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                         startActivityForResult(intent, 1000);
+
                     }
 
                 }
@@ -164,6 +172,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
 
     private void showUnsupported() {
         mStatusBluetoothTextView.setText(R.string.bluetooth_unsopported_message);
+//        mStatusBluetoothTextView.animate().translationY(200);
         //TODO: QUE HACEMOS ACA? SALIR DE LA APLICACION?
         //mActivateBtn.setText("Enable");
         //mActivateBtn.setEnabled(false);
@@ -176,21 +185,27 @@ public class ConnectDeviceActivity extends AppCompatActivity {
         mStatusBluetoothTextView.setText(R.string.bluetooth_on);
         mStatusBluetoothTextView.setTextColor(Color.BLUE);
 
-        mEnableBluetoothButton.setText(R.string.bluetooth_disable);
-        mEnableBluetoothButton.setEnabled(true);
+//        mEnableBluetoothButton.setText(R.string.bluetooth_disable);
+//        mEnableBluetoothButton.setEnabled(true);
+
+        mEnableBluetoothSwitch.setText(R.string.bluetooth_disable);
 
         //mPairedBtn.setEnabled(true);
         mScanBluetoothDevicesButton.setEnabled(true);
+        mEnableBluetoothSwitch.setChecked(true);
         enableBondButton();
     }
 
     private void showDisabled() {
         mStatusBluetoothTextView.setText(R.string.bluetooth_off);
+
         mStatusBluetoothTextView.setTextColor(Color.RED);
 
-        mEnableBluetoothButton.setText(R.string.bluetooth_enable);
-        mEnableBluetoothButton.setEnabled(true);
+//        mEnableBluetoothButton.setText(R.string.bluetooth_enable);
+//        mEnableBluetoothButton.setEnabled(true);
 
+        mEnableBluetoothSwitch.setText(R.string.bluetooth_enable);
+        mEnableBluetoothSwitch.setChecked(false);
         //mPairedBtn.setEnabled(false);
         mScanBluetoothDevicesButton.setEnabled(false);
         enableBondButton();
@@ -217,6 +232,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
 
                     showToast(getString(R.string.bluetooth_on));
                     showEnabled();
+                    mStatusBluetoothTextView.animate().translationY(-50);
 
                 }
             }
