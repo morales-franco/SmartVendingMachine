@@ -37,7 +37,7 @@
     <string name="connection_opened_message">\nConnection Opened!\n</string>
     <string name="connection_closed_message">\nConnection Closed!\n</string>
     <string name="enable_bluetooth">Encender Bluetooth</string>
-    <string name="historial_de_compras">Historial de Compras</string>
+    <string name="historial_de_compras">Historial Compras</string>
     <string name="menu_principal">Menu Principal</string>
     <string name="confirmar_compra">Confirmar Compra</string>
     <string name="cancelar_compra">Cancelar Compra</string>
