@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                tools:background="#f31231ca">
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/fechaLabel"
+        android:layout_centerVertical="true"
+        tools:text="Fecha: 26/04/16"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        tools:text="Alfajor Milka Triple"
+        android:id="@+id/itemLabel"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/fechaLabel"
+        android:layout_toEndOf="@+id/fechaLabel"
+        android:textSize="16sp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="$ 19.99"
+        android:id="@+id/montoLabel"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingRight="15dp"
+        android:textColor="#4d9e38"
+        android:textSize="14sp"/>
+</RelativeLayout>

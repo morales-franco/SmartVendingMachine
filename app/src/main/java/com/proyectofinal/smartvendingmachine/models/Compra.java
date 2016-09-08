@@ -9,7 +9,7 @@ import java.util.List;
 public class Compra {
     private Date mFechaCompra;
     private Double mTotal;
-    private List<CompraItem> mCompraItems;
+    private CompraItem[] mCompraItems;
 
 
     public Date getFechaCompra() {
@@ -28,11 +28,11 @@ public class Compra {
         mTotal = total;
     }
 
-    public List<CompraItem> getCompraItems() {
+    public CompraItem[] getCompraItems() {
         return mCompraItems;
     }
 
-    public void setCompraItems(List<CompraItem> compraItems) {
+    public void setCompraItems(CompraItem[] compraItems) {
         mCompraItems = compraItems;
     }
 

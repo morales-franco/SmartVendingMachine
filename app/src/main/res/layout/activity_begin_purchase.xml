@@ -49,8 +49,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/editText"
         android:layout_alignEnd="@+id/editText"
-        android:layout_alignParentBottom="true"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:layout_above="@+id/confirmarCompraButton"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -71,5 +71,27 @@
         android:layout_toRightOf="@+id/buttonStop"
         android:layout_toEndOf="@+id/buttonStop"
         android:onClick="onClickClear"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirmar_compra"
+        android:id="@+id/confirmarCompraButton"
+        android:layout_above="@+id/cancelarCompraButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#49c647"
+        android:layout_marginBottom="5dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cancelar_compra"
+        android:id="@+id/cancelarCompraButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#FFDC2424"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"/>
 
 </RelativeLayout>

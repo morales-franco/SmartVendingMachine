@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         android:id="@+id/recyclerView"
         android:layout_alignParentEnd="false"
+        android:layout_alignStart="@id/historialLabel"
         android:layout_below="@+id/historialLabel"/>
 
     <TextView
@@ -29,6 +30,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
         android:textAlignment="center"
-        android:textSize="24sp"/>
+        android:textSize="24dp"/>
 
 </RelativeLayout>
