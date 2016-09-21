@@ -22,7 +22,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class BeginPurchaseActivity extends AppCompatActivity {
-    private String DEVICE_ADDRESS="20:16:03:08:52:53";
+    private String DEVICE_ADDRESS="";
     private UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
     private BluetoothDevice device;
     private BluetoothSocket socket;
@@ -42,7 +42,6 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin_purchase);
 
-        // Todo: cargar el intent
         Intent intent = getIntent();
         DEVICE_ADDRESS = intent.getStringExtra("device_address");
 
@@ -174,7 +173,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                             handler.post(new Runnable() {
                                 public void run()
                                 {
-                                    textView.append(string);
+                            textView.append(string);
                                 }
                             });
 
