@@ -3,17 +3,18 @@ package com.proyectofinal.smartvendingmachine.models;
 /**
  * Created by franc on 6/6/2016.
  */
+//todo: va?
 public class CompraItem {
-    private Producto mProducto;
+    private Item mItem;
     private int mCantidad;
     private double mPrecio;
 
-    public Producto getProducto() {
-        return mProducto;
+    public Item getItem() {
+        return mItem;
     }
 
-    public void setProducto(Producto producto) {
-        mProducto = producto;
+    public void setItem(Item item) {
+        mItem = item;
     }
 
     public int getCantidad() {

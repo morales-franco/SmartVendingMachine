@@ -53,8 +53,8 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
 
     public void bindHistorial(Compra compra){
         mFechaLabel.setText(compra.getFechaCompra()+"");
-        mItemLabel.setText(compra.getCompraItems()[0].getProducto().getNombre()+"");//compra.getCompraItems()
-        mMontoLabel.setText("$ "+compra.getTotal()+"");
+        mItemLabel.setText(compra.getItem().getDescripcion());//compra.getCompraItems()
+        mMontoLabel.setText("$ "+compra.getItem().getPrecio());
     }
     }
 }

@@ -13,29 +13,6 @@
     tools:context="com.proyectofinal.smartvendingmachine.ui.UserHistortyActivity"
     tools:showIn="@layout/activity_user_historty">
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recyclerView"
-        android:layout_alignParentEnd="false"
-        android:layout_alignStart="@id/historialLabel"
-        android:layout_below="@+id/historialLabel"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/historial_de_compras"
-        android:id="@+id/historialLabel"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="false"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:minHeight="50dp"
-        android:layout_toLeftOf="@+id/saldoImageView"
-        android:layout_toStartOf="@+id/saldoImageView"/>
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,15 +26,40 @@
         android:layout_alignParentEnd="true"/>
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/historial_de_compras"
+        android:id="@+id/historialLabel"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:minHeight="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/saldoImageView"
+        android:layout_toStartOf="@+id/saldoImageView"/>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="$99.99"
         android:id="@+id/saldoLabel"
         android:textSize="13sp"
-        android:layout_alignBottom="@+id/saldoImageView"
-        android:layout_alignLeft="@+id/saldoImageView"
-        android:layout_alignStart="@+id/saldoImageView"
-        android:textColor="#FF000000"/>
+        android:textColor="#FF000000"
+        android:layout_below="@+id/saldoImageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textAlignment="textEnd"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/saldoLabel"/>
 
 </RelativeLayout>

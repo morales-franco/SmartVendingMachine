@@ -5,6 +5,7 @@ import java.util.Date;
 /**
  * Created by franc on 6/6/2016.
  */
+//todo: va?
 public class Credito {
     private Date mLastDeposito;
     private double mSaldo;

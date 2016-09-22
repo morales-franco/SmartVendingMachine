@@ -1,41 +1,37 @@
 package com.proyectofinal.smartvendingmachine.models;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by franc on 6/6/2016.
  */
 public class Compra {
-    private Date mFechaCompra;
-    private Double mTotal;
-    private CompraItem[] mCompraItems;
+    private long mFechaCompra;
+    private double mUsuarioId;
+    private Item mItem;
 
-
-    public Date getFechaCompra() {
+    public long getFechaCompra() {
         return mFechaCompra;
     }
 
-    public void setFechaCompra(Date fechaCompra) {
+    public void setFechaCompra(long fechaCompra) {
         mFechaCompra = fechaCompra;
     }
 
-    public Double getTotal() {
-        return mTotal;
+    public double getUsuarioId() {
+        return mUsuarioId;
     }
 
-    public void setTotal(Double total) {
-        mTotal = total;
+    public void setUsuarioId(double usuarioId) {
+        mUsuarioId = usuarioId;
     }
 
-    public CompraItem[] getCompraItems() {
-        return mCompraItems;
+    public Item getItem() {
+        return mItem;
     }
 
-    public void setCompraItems(CompraItem[] compraItems) {
-        mCompraItems = compraItems;
+    public void setItem(Item item) {
+        mItem = item;
     }
-
-
 
 }

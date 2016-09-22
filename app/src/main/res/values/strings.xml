@@ -41,4 +41,8 @@
     <string name="menu_principal">Menu Principal</string>
     <string name="confirmar_compra">Confirmar Compra</string>
     <string name="cancelar_compra">Cancelar Compra</string>
+    <string name="error_title">Ooops!</string>
+    <string name="error_message">Hubo un error, intente nuevamente.</string>
+    <string name="error_ok_button">Ok</string>
+    <string name="error_red_no_disponible">No esta conectado a la red</string>
 </resources>

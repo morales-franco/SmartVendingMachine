@@ -1,43 +1,31 @@
 package com.proyectofinal.smartvendingmachine.models;
 
 public class HistorialCompras {
-    private String mConcepto;
-    private long mFecha;
-    private Producto mProducto;
-    private long mPrecio;
+    private double mCredito;
+    private long mUserId;
+    private Compra[] mCompras;
 
-    public long getPrecio() {
-        return mPrecio;
+    public double getCredito() {
+        return mCredito;
     }
 
-    public void setPrecio(long precio) {
-        mPrecio = precio;
+    public void setCredito(double credito) {
+        mCredito = credito;
     }
 
-    public String getConcepto() {
-        return mConcepto;
+    public long getUserId() {
+        return mUserId;
     }
 
-    public void setConcepto(String concepto) {
-        mConcepto = concepto;
+    public void setUserId(long userId) {
+        mUserId = userId;
     }
 
-    public long getFecha() {
-        return mFecha;
+    public Compra[] getCompras() {
+        return mCompras;
     }
 
-    public void setFecha(long fecha) {
-        mFecha = fecha;
+    public void setCompras(Compra[] compras) {
+        mCompras = compras;
     }
-
-    public Producto getProducto() {
-        return mProducto;
-    }
-
-    public void setProducto(Producto producto) {
-        mProducto = producto;
-    }
-
-
-
 }

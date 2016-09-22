@@ -2,7 +2,7 @@
 //
 //import com.proyectofinal.smartvendingmachine.models.Compra;
 //import com.proyectofinal.smartvendingmachine.models.CompraItem;
-//import com.proyectofinal.smartvendingmachine.models.Producto;
+//import com.proyectofinal.smartvendingmachine.models.Item;
 //
 //import java.util.ArrayList;
 //import java.util.Date;
@@ -26,11 +26,11 @@
 //        compra1_item1.setCantidad(1);
 //        compra1_item1.setPrecio(50.0);
 //
-//        Producto compra1_producto1 = new Producto();
-//        compra1_producto1.setProductoID(1);
-//        compra1_producto1.setNombre("Coca 750cc");
+//        Item compra1_producto1 = new Item();
+//        compra1_producto1.setItemID(1);
+//        compra1_producto1.setDescripcion("Coca 750cc");
 //
-//        compra1_item1.setProducto(compra1_producto1);
+//        compra1_item1.setItem(compra1_producto1);
 //
 //
 //
@@ -38,11 +38,11 @@
 //        compra1_item2.setCantidad(3);
 //        compra1_item2.setPrecio(50.0);
 //
-//        Producto compra1_producto2 = new Producto();
-//        compra1_producto2.setProductoID(2);
-//        compra1_producto2.setNombre("Fanta 750cc");
+//        Item compra1_producto2 = new Item();
+//        compra1_producto2.setItemID(2);
+//        compra1_producto2.setDescripcion("Fanta 750cc");
 //
-//        compra1_item2.setProducto(compra1_producto2);
+//        compra1_item2.setItem(compra1_producto2);
 //
 //        compra1_items.add(compra1_item1);
 //        compra1_items.add(compra1_item2);
@@ -58,21 +58,21 @@
 //        compra2_item1.setCantidad(1);
 //        compra2_item1.setPrecio(100.0);
 //
-//        Producto compra2_producto1 = new Producto();
-//        compra2_producto1.setProductoID(3);
-//        compra2_producto1.setNombre("Pepsi 1l");
+//        Item compra2_producto1 = new Item();
+//        compra2_producto1.setItemID(3);
+//        compra2_producto1.setDescripcion("Pepsi 1l");
 //
-//        compra2_item1.setProducto(compra2_producto1);
+//        compra2_item1.setItem(compra2_producto1);
 //
 //        CompraItem compra2_item2 = new CompraItem();
 //        compra2_item2.setCantidad(2);
 //        compra2_item2.setPrecio(50.0);
 //
-//        Producto compra2_producto2 = new Producto();
-//        compra2_producto2.setProductoID(4);
-//        compra2_producto2.setNombre("Levite Naranja 750cc");
+//        Item compra2_producto2 = new Item();
+//        compra2_producto2.setItemID(4);
+//        compra2_producto2.setDescripcion("Levite Naranja 750cc");
 //
-//        compra2_item2.setProducto(compra2_producto2);
+//        compra2_item2.setItem(compra2_producto2);
 //
 //        compra2_items.add(compra2_item1);
 //        compra2_items.add(compra2_item2);
