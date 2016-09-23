@@ -13,13 +13,13 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
 
     private Compra[] mCompras;
 
-    public HistorialAdapter(Compra[] compras){
+    public HistorialAdapter(Compra[] compras) {
         mCompras = compras;
     }
 
     @Override
     public HistorialViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.historial_compras_list_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.historial_compras_list_item, parent, false);
         HistorialViewHolder viewHolder = new HistorialViewHolder(view);
 
         return viewHolder;
@@ -46,15 +46,15 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
             super(itemView);
             //todo: bindear con butterknife
             mFechaLabel = (TextView) itemView.findViewById(R.id.fechaLabel);
-            mItemLabel  = (TextView) itemView.findViewById(R.id.itemLabel);
+            mItemLabel = (TextView) itemView.findViewById(R.id.itemLabel);
             mMontoLabel = (TextView) itemView.findViewById(R.id.montoLabel);
 
         }
 
-    public void bindHistorial(Compra compra){
-        mFechaLabel.setText(compra.getFechaCompra()+"");
-        mItemLabel.setText(compra.getItem().getDescripcion());//compra.getCompraItems()
-        mMontoLabel.setText("$ "+compra.getItem().getPrecio());
-    }
+        public void bindHistorial(Compra compra) {
+            mFechaLabel.setText(compra.getFechaCompra() + "");
+            mItemLabel.setText(compra.getItem().getDescripcion() + " ( x" + compra.getItem().getCantidad() + " )");//compra.getItem().getDescripcion()compra.getCompraItems()
+            mMontoLabel.setText("$ "+ compra.getItem().getPrecioUnitario()*compra.getItem().getCantidad());//+compra.getItem().getPrecio()
+        }
     }
 }

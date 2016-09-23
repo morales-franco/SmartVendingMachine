@@ -6,24 +6,15 @@ import java.util.Date;
  * Created by franc on 6/6/2016.
  */
 public class Compra {
-    private long mFechaCompra;
-    private double mUsuarioId;
+    private String mFechaCompra;
     private Item mItem;
 
-    public long getFechaCompra() {
+    public String getFechaCompra() {
         return mFechaCompra;
     }
 
-    public void setFechaCompra(long fechaCompra) {
+    public void setFechaCompra(String fechaCompra) {
         mFechaCompra = fechaCompra;
-    }
-
-    public double getUsuarioId() {
-        return mUsuarioId;
-    }
-
-    public void setUsuarioId(double usuarioId) {
-        mUsuarioId = usuarioId;
     }
 
     public Item getItem() {

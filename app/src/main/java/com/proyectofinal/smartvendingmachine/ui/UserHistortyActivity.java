@@ -36,10 +36,12 @@ import okhttp3.Response;
 
 public class UserHistortyActivity extends AppCompatActivity {
 
-    private HistorialCompras mHistorialCompras;
+    private HistorialCompras mHistorialCompras = new HistorialCompras();
 
-    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.saldoLabel) TextView mSaldoLabel;
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.saldoLabel)
+    TextView mSaldoLabel;
 
     public static final String TAG = UserHistortyActivity.class.getSimpleName();
 
@@ -49,7 +51,7 @@ public class UserHistortyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_historty);
         ButterKnife.bind(this);
 
-        String historyJsonURL = "https://api.myjson.com/bins/2hsym";
+        String historyJsonURL = "https://api.myjson.com/bins/1j7r4";
 
         if (isNetworkAvailable()) {
             OkHttpClient client = new OkHttpClient();
@@ -81,14 +83,12 @@ public class UserHistortyActivity extends AppCompatActivity {
 
                     } catch (IOException e) {
                         Log.e(TAG, "Excepcion en el request", e);
-                    }
-                    catch (JSONException e){
+                    } catch (JSONException e) {
                         Log.e(TAG, "Excepcion en JSON", e);
                     }
                 }
             });
-        }
-        else {
+        } else {
             Toast.makeText(this, R.string.error_red_no_disponible, Toast.LENGTH_LONG).show();
         }
     }
@@ -100,20 +100,11 @@ public class UserHistortyActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mSaldoLabel.setText("$ "+mHistorialCompras.getCredito());
+        mSaldoLabel.setText("$123.45 ");
     }
 
     private HistorialCompras getUserDetails(String jsonData) throws JSONException {
-        JSONObject dataUsuario = new JSONObject(jsonData);
-        JSONObject historialConsumos = dataUsuario.getJSONObject("consumos");
-
-        long idUsuario =  historialConsumos.getLong("idUsuario");
-        Log.i(TAG, "From Json: "+ idUsuario);
-
         HistorialCompras historialCompras = new HistorialCompras();
-        historialCompras.setCredito(historialConsumos.getDouble("credito"));
-        historialCompras.setUserId(historialConsumos.getLong("idUsuario"));
-
         historialCompras.setCompras(getUserHistory(jsonData));
 
         return historialCompras;
@@ -135,32 +126,71 @@ public class UserHistortyActivity extends AppCompatActivity {
     }
 
 
-
     private Compra[] getUserHistory(String jsonData) throws JSONException {
-        JSONObject dataConsumos = new JSONObject(jsonData);
-        JSONObject historial = dataConsumos.getJSONObject("consumos");
-        JSONArray data = historial.getJSONArray("data");
+        JSONArray historialCompras = new JSONArray(jsonData);
 
-        Compra[] compras =  new Compra[data.length()];
+        int lengthItems = 0;
+        for (int i = 0; i < historialCompras.length(); i++) {
+            JSONObject jsonCompra = historialCompras.getJSONObject(i);
+            lengthItems += jsonCompra.getJSONArray("items").length();
+        }
 
-        for(int i = 0; i < data.length(); i++){
-            JSONObject jsonCompra = data.getJSONObject(i);
-            Compra compra = new Compra();
+        Compra[] compras = new Compra[lengthItems];
+        int itemsInsertados = 0;
+        for (int k = 0; k < historialCompras.length(); k++) {
 
-            Item item = new Item();
-            item.setDescripcion(jsonCompra.getString("item"));
-            item.setItemID(jsonCompra.getLong("idItem"));
-            item.setPrecio(jsonCompra.getDouble("precio"));
+            JSONObject jsonCompra = historialCompras.getJSONObject(k);
+            JSONArray items = jsonCompra.getJSONArray("items");
 
-            compra.setFechaCompra(jsonCompra.getLong("fecha"));
-            compra.setUsuarioId(jsonCompra.getLong("idItem"));
+            for (int i = 0; i < items.length(); i++) {
 
-            compra.setItem(item);
+                JSONObject jsonItem = items.getJSONObject(i);
 
-            compras[i] = compra;
+                Compra compra = new Compra();
+                Item item = new Item();
+
+                item.setCantidad(jsonItem.getLong("cantidad"));
+                item.setDescripcion(jsonItem.getString("descripcion"));
+                item.setPrecioUnitario(jsonItem.getDouble("precioUnitario"));
+                item.setMproductoID(jsonItem.getLong("productoID"));
+                item.setPrecio(item.getPrecio()*item.getCantidad());
+
+                compra.setFechaCompra(historialCompras.getJSONObject(k).getString("fechaCompra"));
+                mHistorialCompras.setUserId(historialCompras.getJSONObject(k).getString("userID"));
+
+                compra.setItem(item);
+
+                compras[itemsInsertados] = compra;
+                itemsInsertados++;
+
+            }
         }
         return compras;
     }
+    //
+//        JSONObject dataConsumos = new JSONObject(jsonData);
+//        JSONObject historial = dataConsumos.getJSONObject("consumos");
+//        JSONArray data = historial.getJSONArray("data");
+//
+//        Compra[] compras =  new Compra[data.length()];
+//
+//        for(int i = 0; i < data.length(); i++){
+//            JSONObject jsonCompra = data.getJSONObject(i);
+//            Compra compra = new Compra();
+//
+//            Item item = new Item();
+//            item.setDescripcion(jsonCompra.getString("item"));
+//            item.setItemID(jsonCompra.getLong("idItem"));
+//            item.setPrecio(jsonCompra.getDouble("precio"));
+//
+//            compra.setFechaCompra(jsonCompra.getLong("fecha"));
+//            compra.setUsuarioId(jsonCompra.getLong("idItem"));
+//
+//            compra.setItem(item);
+//
+//            compras[i] = compra;
+//        }
+//        return compras;
 
 
 }
