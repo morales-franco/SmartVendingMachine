@@ -51,7 +51,8 @@ public class UserHistortyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_historty);
         ButterKnife.bind(this);
 
-        String historyJsonURL = "https://api.myjson.com/bins/1j7r4";
+        String userIDUrl = "?userID=ea56c62f-a883-470c-acdf-6afc2e31a7cb";
+        String historyJsonURL = "http://smartvending.somee.com/BackOffice/Api/Compra/HistorialCompras"+userIDUrl;
 
         if (isNetworkAvailable()) {
             OkHttpClient client = new OkHttpClient();
