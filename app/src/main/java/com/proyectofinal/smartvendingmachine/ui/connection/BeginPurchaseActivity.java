@@ -4,9 +4,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.proyectofinal.smartvendingmachine.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,8 +29,14 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class BeginPurchaseActivity extends AppCompatActivity {
+    private static final String TAG = "BeginPurchaseActivity";
     private String DEVICE_ADDRESS = "";
     private UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
     private BluetoothDevice device;
@@ -35,22 +47,14 @@ public class BeginPurchaseActivity extends AppCompatActivity {
     byte buffer[];
     boolean stopThread;
 
-    @BindView(R.id.buttonStart)
-    Button startButton;
-    @BindView(R.id.buttonSend)
-    Button sendButton;
-    @BindView(R.id.buttonClear)
-    Button clearButton;
-    @BindView(R.id.buttonStop)
-    Button stopButton;
-    @BindView(R.id.editText)
-    EditText editText;
-    @BindView(R.id.textView)
-    TextView textView;
-    @BindView(R.id.confirmarCompraButton)
-    Button mConfirmarCompraButton;
-    @BindView(R.id.cancelarCompraButton)
-    Button mCancelarCompraButton;
+    @BindView(R.id.buttonStart) Button startButton;
+    @BindView(R.id.buttonSend) Button sendButton;
+    @BindView(R.id.buttonClear) Button clearButton;
+    @BindView(R.id.buttonStop) Button stopButton;
+    @BindView(R.id.editText) EditText editText;
+    @BindView(R.id.textView) TextView textView;
+    @BindView(R.id.confirmarCompraButton) Button mConfirmarCompraButton;
+    @BindView(R.id.cancelarCompraButton) Button mCancelarCompraButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +71,20 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         setUiEnabled(false);
 
         mConfirmarCompraButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
+                Thread thread = new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        try {
+                            postJson();
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage());
+                        }
+                    }
+                });
+                thread.start();
                 showToast("Compra Confirmada");
             }
         });
@@ -87,12 +103,25 @@ public class BeginPurchaseActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void postJson() throws IOException, JSONException {
+        PostCompra postCompra = new PostCompra();
+        String response = postCompra.post(postCompra.getUrlCompra(),postCompra.getJsonCompra());
+
+        JSONObject jsonResponse = new JSONObject(response);
+
+        String responseText = "Success: "+jsonResponse.getString("success") +"\r\\\n"+
+                "Saldo Actulizado: " + jsonResponse.getString("saldoActualizado");
+
+
+        textView.setText(responseText.replace("\\\n", System.getProperty("line.separator")));
+    }
+
     public void setUiEnabled(boolean bool) {
         startButton.setEnabled(!bool);
         sendButton.setEnabled(bool);
         stopButton.setEnabled(bool);
         textView.setEnabled(bool);
-
     }
 
     public boolean BTinit() {
@@ -145,10 +174,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
-
-
         return connected;
     }
 
@@ -160,7 +186,6 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                 beginListenForData();
                 textView.append("\nConnection Opened!\n");
             }
-
         }
     }
 
