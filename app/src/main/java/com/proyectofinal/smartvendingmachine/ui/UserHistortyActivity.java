@@ -15,7 +15,6 @@ import com.proyectofinal.smartvendingmachine.R;
 import com.proyectofinal.smartvendingmachine.adapters.HistorialAdapter;
 import com.proyectofinal.smartvendingmachine.models.AlertDialogFragment;
 import com.proyectofinal.smartvendingmachine.models.Compra;
-import com.proyectofinal.smartvendingmachine.models.CompraItem;
 import com.proyectofinal.smartvendingmachine.models.HistorialCompras;
 import com.proyectofinal.smartvendingmachine.models.Item;
 
@@ -52,7 +51,7 @@ public class UserHistortyActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         String userIDUrl = "?userID=ea56c62f-a883-470c-acdf-6afc2e31a7cb";
-        String historyJsonURL = "http://smartvending.somee.com/BackOffice/Api/Compra/HistorialCompras"+userIDUrl;
+        String historyJsonURL = "http://smartvending.somee.com/BackOffice/Api/Compra/HistorialCompras" + userIDUrl;
 
         if (isNetworkAvailable()) {
             OkHttpClient client = new OkHttpClient();
@@ -101,6 +100,7 @@ public class UserHistortyActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
+        //todo: cambiar esto a el dato real.
         mSaldoLabel.setText("$123.45 ");
     }
 
@@ -154,7 +154,7 @@ public class UserHistortyActivity extends AppCompatActivity {
                 item.setDescripcion(jsonItem.getString("descripcion"));
                 item.setPrecioUnitario(jsonItem.getDouble("precioUnitario"));
                 item.setMproductoID(jsonItem.getLong("productoID"));
-                item.setPrecio(item.getPrecio()*item.getCantidad());
+                item.setPrecio(item.getPrecio() * item.getCantidad());
 
                 compra.setFechaCompra(historialCompras.getJSONObject(k).getString("fechaCompra"));
                 mHistorialCompras.setUserId(historialCompras.getJSONObject(k).getString("userID"));
@@ -168,30 +168,4 @@ public class UserHistortyActivity extends AppCompatActivity {
         }
         return compras;
     }
-    //
-//        JSONObject dataConsumos = new JSONObject(jsonData);
-//        JSONObject historial = dataConsumos.getJSONObject("consumos");
-//        JSONArray data = historial.getJSONArray("data");
-//
-//        Compra[] compras =  new Compra[data.length()];
-//
-//        for(int i = 0; i < data.length(); i++){
-//            JSONObject jsonCompra = data.getJSONObject(i);
-//            Compra compra = new Compra();
-//
-//            Item item = new Item();
-//            item.setDescripcion(jsonCompra.getString("item"));
-//            item.setItemID(jsonCompra.getLong("idItem"));
-//            item.setPrecio(jsonCompra.getDouble("precio"));
-//
-//            compra.setFechaCompra(jsonCompra.getLong("fecha"));
-//            compra.setUsuarioId(jsonCompra.getLong("idItem"));
-//
-//            compra.setItem(item);
-//
-//            compras[i] = compra;
-//        }
-//        return compras;
-
-
 }
