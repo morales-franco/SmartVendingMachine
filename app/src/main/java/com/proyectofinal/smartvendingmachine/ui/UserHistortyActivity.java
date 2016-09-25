@@ -51,7 +51,7 @@ public class UserHistortyActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         String userIDUrl = "?userID=ea56c62f-a883-470c-acdf-6afc2e31a7cb";
-        String historyJsonURL = "http://smartvending.somee.com/BackOffice/Api/Compra/HistorialCompras" + userIDUrl;
+        String historyJsonURL = "http://smartvendingdev.somee.com/BackOffice/Api/Compra/HistorialCompras" + userIDUrl;
 
         if (isNetworkAvailable()) {
             OkHttpClient client = new OkHttpClient();
