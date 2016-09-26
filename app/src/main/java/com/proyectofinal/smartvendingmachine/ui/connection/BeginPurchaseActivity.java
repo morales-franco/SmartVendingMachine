@@ -213,6 +213,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                             handler.post(new Runnable() {
                                 public void run() {
                                     textView.append(string);
+                                    parseCompraToJson(string);
                                 }
                             });
 
@@ -225,6 +226,10 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         });
 
         thread.start();
+    }
+
+    private void parseCompraToJson(String stringCompra) {
+
     }
 
     public void onClickSend(View view) {
