@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.proyectofinal.smartvendingmachine.R;
 import com.proyectofinal.smartvendingmachine.adapters.HistorialAdapter;
 import com.proyectofinal.smartvendingmachine.models.AlertDialogFragment;
-import com.proyectofinal.smartvendingmachine.models.Compra;
+import com.proyectofinal.smartvendingmachine.models.CompraDeHistorial;
 import com.proyectofinal.smartvendingmachine.models.HistorialCompras;
 import com.proyectofinal.smartvendingmachine.models.Item;
 
@@ -23,7 +23,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +50,7 @@ public class UserHistortyActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         String userIDUrl = "?userID=ea56c62f-a883-470c-acdf-6afc2e31a7cb";
-        String historyJsonURL = "http://smartvendingdev.somee.com/BackOffice/Api/Compra/HistorialCompras" + userIDUrl;
+        String historyJsonURL = "http://smartvendingdev.somee.com/BackOffice/Api/Compra/HistorialCompras?userID=ea56c62f-a883-470c-acdf-6afc2e31a7cb";
 
         if (isNetworkAvailable()) {
             OkHttpClient client = new OkHttpClient();
@@ -94,7 +93,7 @@ public class UserHistortyActivity extends AppCompatActivity {
     }
 
     private void updateDisplay() {
-        HistorialAdapter adapter = new HistorialAdapter(mHistorialCompras.getCompras());
+        HistorialAdapter adapter = new HistorialAdapter(mHistorialCompras.getCompraDeHistorials());
         mRecyclerView.setAdapter(adapter);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -106,7 +105,7 @@ public class UserHistortyActivity extends AppCompatActivity {
 
     private HistorialCompras getUserDetails(String jsonData) throws JSONException {
         HistorialCompras historialCompras = new HistorialCompras();
-        historialCompras.setCompras(getUserHistory(jsonData));
+        historialCompras.setCompraDeHistorials(getUserHistory(jsonData));
 
         return historialCompras;
     }
@@ -127,7 +126,7 @@ public class UserHistortyActivity extends AppCompatActivity {
     }
 
 
-    private Compra[] getUserHistory(String jsonData) throws JSONException {
+    private CompraDeHistorial[] getUserHistory(String jsonData) throws JSONException {
         JSONArray historialCompras = new JSONArray(jsonData);
 
         int lengthItems = 0;
@@ -136,7 +135,7 @@ public class UserHistortyActivity extends AppCompatActivity {
             lengthItems += jsonCompra.getJSONArray("items").length();
         }
 
-        Compra[] compras = new Compra[lengthItems];
+        CompraDeHistorial[] compraDeHistorials = new CompraDeHistorial[lengthItems];
         int itemsInsertados = 0;
         for (int k = 0; k < historialCompras.length(); k++) {
 
@@ -147,25 +146,25 @@ public class UserHistortyActivity extends AppCompatActivity {
 
                 JSONObject jsonItem = items.getJSONObject(i);
 
-                Compra compra = new Compra();
+                CompraDeHistorial compraDeHistorial = new CompraDeHistorial();
                 Item item = new Item();
 
                 item.setCantidad(jsonItem.getLong("cantidad"));
                 item.setDescripcion(jsonItem.getString("descripcion"));
                 item.setPrecioUnitario(jsonItem.getDouble("precioUnitario"));
-                item.setMproductoID(jsonItem.getLong("productoID"));
+                item.setProductoID(jsonItem.getLong("productoID"));
                 item.setPrecio(item.getPrecio() * item.getCantidad());
 
-                compra.setFechaCompra(historialCompras.getJSONObject(k).getString("fechaCompra"));
+                compraDeHistorial.setFechaCompra(historialCompras.getJSONObject(k).getString("fechaCompra"));
                 mHistorialCompras.setUserId(historialCompras.getJSONObject(k).getString("userID"));
 
-                compra.setItem(item);
+                compraDeHistorial.setItem(item);
 
-                compras[itemsInsertados] = compra;
+                compraDeHistorials[itemsInsertados] = compraDeHistorial;
                 itemsInsertados++;
 
             }
         }
-        return compras;
+        return compraDeHistorials;
     }
 }

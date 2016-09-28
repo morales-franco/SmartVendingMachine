@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.proyectofinal.smartvendingmachine.R;
-import com.proyectofinal.smartvendingmachine.models.Compra;
+import com.proyectofinal.smartvendingmachine.models.CompraDeHistorial;
 
 public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.HistorialViewHolder> {
 
-    private Compra[] mCompras;
+    private CompraDeHistorial[] mCompraDeHistorials;
 
-    public HistorialAdapter(Compra[] compras) {
-        mCompras = compras;
+    public HistorialAdapter(CompraDeHistorial[] compraDeHistorials) {
+        mCompraDeHistorials = compraDeHistorials;
     }
 
     @Override
@@ -27,12 +27,12 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
 
     @Override
     public void onBindViewHolder(HistorialViewHolder holder, int position) {
-        holder.bindHistorial(mCompras[position]);
+        holder.bindHistorial(mCompraDeHistorials[position]);
     }
 
     @Override
     public int getItemCount() {
-        return mCompras.length;
+        return mCompraDeHistorials.length;
     }
 
     public class HistorialViewHolder extends RecyclerView.ViewHolder {
@@ -51,10 +51,10 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
 
         }
 
-        public void bindHistorial(Compra compra) {
-            mFechaLabel.setText(compra.getFechaCompra() + "");
-            mItemLabel.setText(compra.getItem().getDescripcion() + " ( x" + compra.getItem().getCantidad() + " )");//compra.getItem().getDescripcion()compra.getCompraItems()
-            mMontoLabel.setText("$ "+ compra.getItem().getPrecioUnitario()*compra.getItem().getCantidad());//+compra.getItem().getPrecio()
+        public void bindHistorial(CompraDeHistorial compraDeHistorial) {
+            mFechaLabel.setText(compraDeHistorial.getFechaCompra() + "");
+            mItemLabel.setText(compraDeHistorial.getItem().getDescripcion() + " ( x" + compraDeHistorial.getItem().getCantidad() + " )");//compraDeHistorial.getItem().getDescripcion()compraDeHistorial.getCompraItems()
+            mMontoLabel.setText("$ "+ compraDeHistorial.getItem().getPrecioUnitario()* compraDeHistorial.getItem().getCantidad());//+compraDeHistorial.getItem().getPrecio()
         }
     }
 }

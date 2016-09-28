@@ -133,6 +133,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
     private Compra armarCompra(ArrayList<Item> itemsCompra) {
         Compra compra = new Compra();
 
+        //todo: esta harcodeado el userID y la fecha.
         compra.setUserId("ea56c62f-a883-470c-acdf-6afc2e31a7cb");
         compra.setExhibidorId(mExhibidorId);
         compra.setFechaCompra("01/09/2016 16:45");
