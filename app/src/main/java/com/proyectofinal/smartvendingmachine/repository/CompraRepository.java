@@ -1,6 +1,6 @@
 //package com.proyectofinal.smartvendingmachine.repository;
 //
-//import com.proyectofinal.smartvendingmachine.models.Compra;
+//import com.proyectofinal.smartvendingmachine.models.CompraDeHistorial;
 //import com.proyectofinal.smartvendingmachine.models.CompraItem;
 //import com.proyectofinal.smartvendingmachine.models.Item;
 //
@@ -13,11 +13,11 @@
 // */
 //public class CompraRepository {
 //
-//    public List<Compra> GetList(){
-//        List<Compra> compras = new ArrayList<>();
+//    public List<CompraDeHistorial> GetList(){
+//        List<CompraDeHistorial> compras = new ArrayList<>();
 //        Date fechaActual = new Date();
 //
-//        Compra compra1 = new Compra();
+//        CompraDeHistorial compra1 = new CompraDeHistorial();
 //        List<CompraItem> compra1_items = new ArrayList<CompraItem>();
 //        compra1.setTotal(200.0);
 //        compra1.setFechaCompra(fechaActual);
@@ -49,7 +49,7 @@
 //        compra1.setCompraItems(compra1_items);
 //
 //
-//        Compra compra2 = new Compra();
+//        CompraDeHistorial compra2 = new CompraDeHistorial();
 //        List<CompraItem> compra2_items = new ArrayList<CompraItem>();
 //        compra2.setTotal(200.0);
 //        compra2.setFechaCompra(fechaActual);

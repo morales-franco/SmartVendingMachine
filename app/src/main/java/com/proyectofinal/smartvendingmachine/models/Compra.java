@@ -1,13 +1,30 @@
 package com.proyectofinal.smartvendingmachine.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by franc on 6/6/2016.
- */
 public class Compra {
+    private String mUserId;
+    private long mExhibidorId;
     private String mFechaCompra;
-    private Item mItem;
+    private long mMonto;
+    private ArrayList<Item> mItems;
+
+    public String getUserId() {
+        return mUserId;
+    }
+
+    public void setUserId(String userId) {
+        mUserId = userId;
+    }
+
+    public long getExhibidorId() {
+        return mExhibidorId;
+    }
+
+    public void setExhibidorId(long exhibidorId) {
+        mExhibidorId = exhibidorId;
+    }
 
     public String getFechaCompra() {
         return mFechaCompra;
@@ -17,12 +34,20 @@ public class Compra {
         mFechaCompra = fechaCompra;
     }
 
-    public Item getItem() {
-        return mItem;
+    public long getMonto() {
+        return mMonto;
     }
 
-    public void setItem(Item item) {
-        mItem = item;
+    public void setMonto(long monto) {
+        mMonto = monto;
+    }
+
+    public ArrayList<Item> getItems() {
+        return mItems;
+    }
+
+    public void setItems(ArrayList<Item> items) {
+        mItems = items;
     }
 
 }

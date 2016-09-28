@@ -1,6 +1,6 @@
 //package com.proyectofinal.smartvendingmachine.business;
 //
-//import com.proyectofinal.smartvendingmachine.models.Compra;
+//import com.proyectofinal.smartvendingmachine.models.CompraDeHistorial;
 //import com.proyectofinal.smartvendingmachine.repository.CompraRepository;
 //
 //import java.util.List;
@@ -11,7 +11,7 @@
 //public class CompraBusiness {
 //    private CompraRepository Repository = new CompraRepository();
 //
-//    public List<Compra> GetList(){
+//    public List<CompraDeHistorial> GetList(){
 //        return Repository.GetList();
 //    }
 //}

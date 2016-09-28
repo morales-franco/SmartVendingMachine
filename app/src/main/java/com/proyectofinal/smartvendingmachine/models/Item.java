@@ -5,26 +5,35 @@ package com.proyectofinal.smartvendingmachine.models;
  */
 
 public class Item {
-    private long mproductoID;
+    private long mProductoID;
+
     private String mDescripcion;
+
     private double mPrecioUnitario;
     private long mCantidad;
     private double mPrecio;
+    private long mIdBalanza;
 
-    public double getPrecioUnitario() {
-        return mPrecioUnitario;
+    public long getProductoID() {
+        return mProductoID;
     }
+
+    public void setProductoID(long productoID) {
+        mProductoID = productoID;
+    }
+
+    public long getIdBalanza() {
+        return mIdBalanza;
+    }
+
+    public void setIdBalanza(long idBalanza) {
+        mIdBalanza = idBalanza;
+    }
+
+    public double getPrecioUnitario() { return mPrecioUnitario; }
 
     public void setPrecioUnitario(double precioUnitario) {
         mPrecioUnitario = precioUnitario;
-    }
-
-    public long getMproductoID() {
-        return mproductoID;
-    }
-
-    public void setMproductoID(long mproductoID) {
-        this.mproductoID = mproductoID;
     }
 
     public String getDescripcion() {

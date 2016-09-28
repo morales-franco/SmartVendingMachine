@@ -18,6 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.proyectofinal.smartvendingmachine.R;
+import com.proyectofinal.smartvendingmachine.models.Compra;
+import com.proyectofinal.smartvendingmachine.models.CompraDeHistorial;
+import com.proyectofinal.smartvendingmachine.models.Item;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,20 +28,25 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class BeginPurchaseActivity extends AppCompatActivity {
+    private String TRUE = "1";
+    private String FALSE = "0";
+
     private static final String TAG = "BeginPurchaseActivity";
     private String DEVICE_ADDRESS = "";
+
+
     private UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
     private BluetoothDevice device;
     private BluetoothSocket socket;
@@ -48,14 +56,26 @@ public class BeginPurchaseActivity extends AppCompatActivity {
     byte buffer[];
     boolean stopThread;
 
-    @BindView(R.id.buttonStart) Button startButton;
-    @BindView(R.id.buttonSend) Button sendButton;
-    @BindView(R.id.buttonClear) Button clearButton;
-    @BindView(R.id.buttonStop) Button stopButton;
-    @BindView(R.id.editText) EditText editText;
-    @BindView(R.id.textView) TextView textView;
-    @BindView(R.id.confirmarCompraButton) Button mConfirmarCompraButton;
-    @BindView(R.id.cancelarCompraButton) Button mCancelarCompraButton;
+    private String mStringCompraBuffer = "";
+    private ArrayList<Item> mItemsCompra = new ArrayList<Item>();
+    private Long mExhibidorId;
+
+    @BindView(R.id.buttonStart)
+    Button startButton;
+    @BindView(R.id.buttonSend)
+    Button sendButton;
+    @BindView(R.id.buttonClear)
+    Button clearButton;
+    @BindView(R.id.buttonStop)
+    Button stopButton;
+    @BindView(R.id.editText)
+    EditText editText;
+    @BindView(R.id.textView)
+    TextView textView;
+    @BindView(R.id.confirmarCompraButton)
+    Button mConfirmarCompraButton;
+    @BindView(R.id.cancelarCompraButton)
+    Button mCancelarCompraButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,18 +98,21 @@ public class BeginPurchaseActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                Thread thread = new Thread(new Runnable(){
+                Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            postJson();
+                            Compra compra = armarCompra(mItemsCompra);
+                            postCompra(compra);
                         } catch (Exception e) {
                             Log.e(TAG, e.getMessage());
                         }
                     }
                 });
                 thread.start();
-                showToast("Compra Confirmada");
+                showToast("CompraDeHistorial Confirmada");
+
+                //todo: limpio el array mItemsCompra??
             }
         });
 
@@ -107,15 +130,36 @@ public class BeginPurchaseActivity extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void postJson() throws IOException, JSONException {
-        PostCompra postCompra = new PostCompra();
-        String response = postCompra.post(postCompra.getUrlCompra(),postCompra.getJsonCompra());
+    private Compra armarCompra(ArrayList<Item> itemsCompra) {
+        Compra compra = new Compra();
 
+        compra.setUserId("ea56c62f-a883-470c-acdf-6afc2e31a7cb");
+        compra.setExhibidorId(mExhibidorId);
+        compra.setFechaCompra("01/09/2016 16:45");
+        compra.setItems(itemsCompra);
+
+        Iterator<Item> it = itemsCompra.iterator();
+        long montoTotal = 0;
+        while (it.hasNext()) {
+            Item item = it.next();
+            montoTotal += item.getPrecioUnitario()*item.getCantidad();
+        }
+
+        compra.setMonto(montoTotal);
+
+        return compra;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void postCompra(Compra compra) throws IOException, JSONException {
+        PostCompra postCompra = new PostCompra();
+        String response = postCompra.post(compra);
+
+        mItemsCompra.clear();
         JSONObject jsonResponse = new JSONObject(response);
 
-        String responseText = "Success: "+jsonResponse.getString("success") +"\r\\\n"+
-                "Saldo Actulizado: " + jsonResponse.getString("saldoActualizado");
+        String responseText = "Success: " + jsonResponse.getString("success") + "\r\\\n" +
+                "Saldo Actulizado : " + jsonResponse.getString("saldoActualizado");
 
 
         textView.setText(responseText.replace("\\\n", System.getProperty("line.separator")));
@@ -212,8 +256,18 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                             final String string = new String(rawBytes, "UTF-8");
                             handler.post(new Runnable() {
                                 public void run() {
-                                    textView.append(string);
-                                    parseCompraToJson(string);
+                                    mStringCompraBuffer = mStringCompraBuffer + string;
+                                    if (mStringCompraBuffer.toLowerCase().contains("}".toLowerCase())) {
+                                        textView.append(mStringCompraBuffer);
+                                        try {
+                                            procesarAccion(mStringCompraBuffer);
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        mStringCompraBuffer = "";
+
+                                    }
                                 }
                             });
 
@@ -228,7 +282,50 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         thread.start();
     }
 
-    private void parseCompraToJson(String stringCompra) {
+    private void procesarAccion(String stringCompraBuffer) throws JSONException {
+        JSONObject jsonItem = new JSONObject(stringCompraBuffer);
+        Item item = new Item();
+
+        item.setDescripcion(jsonItem.getString("ProductoDescripcion"));
+        item.setProductoID(Long.parseLong(jsonItem.getString("IdProducto"), 10));
+        item.setIdBalanza(Long.parseLong(jsonItem.getString("IdBalanza")));
+        item.setCantidad(1);
+        item.setPrecioUnitario(Double.parseDouble(jsonItem.getString("PrecioUnitario")));
+
+        String esDevolucion = jsonItem.getString("EsDevolucion");
+
+        if (mItemsCompra.size() == 0) {
+            mExhibidorId = Long.parseLong(jsonItem.getString("IdExhibidor"), 10);
+            mItemsCompra.add(item);
+        } else {
+            Iterator<Item> it = mItemsCompra.iterator();
+            String encontrado = FALSE;
+            if (esDevolucion == TRUE) {
+                while (it.hasNext() && (encontrado == FALSE)) {
+                    Item targetItem = it.next();
+                    if ((targetItem.getProductoID() == item.getProductoID())) {
+                        if (targetItem.getCantidad() <= 1) {
+                            it.remove();
+                            encontrado = TRUE;
+                        } else {
+                            targetItem.setCantidad(targetItem.getCantidad() - 1);
+                            it.next();
+                        }
+                    }
+                }
+            } else {
+                while (it.hasNext() && (encontrado == FALSE)) {
+                    Item targetItem = it.next();
+                    if ((targetItem.getProductoID() == item.getProductoID())) {
+                        targetItem.setCantidad(targetItem.getCantidad() + 1);
+                        encontrado = TRUE;
+                    }
+                }
+                if(encontrado == FALSE){
+                    mItemsCompra.add(item);
+                }
+            }
+        }
 
     }
 
@@ -241,7 +338,6 @@ public class BeginPurchaseActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         textView.append("\nSent Data:" + string + "\n");
-
     }
 
     public void onClickStop(View view) throws IOException {
