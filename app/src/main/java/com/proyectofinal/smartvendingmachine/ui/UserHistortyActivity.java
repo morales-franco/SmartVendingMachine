@@ -3,7 +3,9 @@ package com.proyectofinal.smartvendingmachine.ui;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +58,7 @@ public class UserHistortyActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         String userIDUrl = "?userID=ea56c62f-a883-470c-acdf-6afc2e31a7cb";
-        String historyJsonURL = "http://smartvendingdev.somee.com/BackOffice/Api/Compra/HistorialCompras?userID=ea56c62f-a883-470c-acdf-6afc2e31a7cb";
+        String historyJsonURL = "http://smartvendingdev.somee.com/BackOffice/Api/Compra/HistorialCompras" + userIDUrl;
 
         if (isNetworkAvailable()) {
             OkHttpClient client = new OkHttpClient();
@@ -93,6 +101,12 @@ public class UserHistortyActivity extends AppCompatActivity {
     }
 
     private void updateDisplay() {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00"));
+        Date currentLocalTime = cal.getTime();
+        DateFormat date = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+
+        String currentDateTimeString = date.format(currentLocalTime);
+
         HistorialAdapter adapter = new HistorialAdapter(mHistorialCompras.getCompraDeHistorials());
         mRecyclerView.setAdapter(adapter);
 
@@ -100,7 +114,7 @@ public class UserHistortyActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
 
         //todo: cambiar esto a el dato real.
-        mSaldoLabel.setText("$123.45 ");
+        mSaldoLabel.setText(currentDateTimeString);
     }
 
     private HistorialCompras getUserDetails(String jsonData) throws JSONException {

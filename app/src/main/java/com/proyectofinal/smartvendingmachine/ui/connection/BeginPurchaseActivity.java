@@ -28,12 +28,14 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -56,6 +58,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
     byte buffer[];
     boolean stopThread;
 
+    private String mUserId = "ea56c62f-a883-470c-acdf-6afc2e31a7cb";
     private String mStringCompraBuffer = "";
     private ArrayList<Item> mItemsCompra = new ArrayList<Item>();
     private Long mExhibidorId;
@@ -110,7 +113,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                     }
                 });
                 thread.start();
-                showToast("CompraDeHistorial Confirmada");
+                showToast("Compra Confirmada");
 
                 //todo: limpio el array mItemsCompra??
             }
@@ -131,12 +134,18 @@ public class BeginPurchaseActivity extends AppCompatActivity {
     }
 
     private Compra armarCompra(ArrayList<Item> itemsCompra) {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00"));
+        Date currentLocalTime = cal.getTime();
+        DateFormat date = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+
+        String currentDateTime = date.format(currentLocalTime);
+
         Compra compra = new Compra();
 
-        //todo: esta harcodeado el userID y la fecha.
-        compra.setUserId("ea56c62f-a883-470c-acdf-6afc2e31a7cb");
+        //todo: esta harcodeado el userID
+        compra.setUserId(mUserId);
         compra.setExhibidorId(mExhibidorId);
-        compra.setFechaCompra("01/09/2016 16:45");
+        compra.setFechaCompra(currentDateTime);
         compra.setItems(itemsCompra);
 
         Iterator<Item> it = itemsCompra.iterator();

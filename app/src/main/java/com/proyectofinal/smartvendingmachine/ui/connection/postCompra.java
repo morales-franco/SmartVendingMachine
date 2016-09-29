@@ -23,28 +23,7 @@ import okhttp3.Response;
 public class PostCompra {
     public static final String mUrlCompra = "http://smartvendingdev.somee.com/Backoffice/API/Compra/Compra/";
 
-    public String mJsonCompra = "{\n" +
-            "    \"UserID\": \"ea56c62f-a883-470c-acdf-6afc2e31a7cb\",\n" +
-            "    \"ExhibidorID\": 6,\n" +
-            "    \"FechaCompra\": \"01/09/2016 16:45\",\n" +
-            "    \"Monto\": 100,\n" +
-            "    \"Items\": [\n" +
-            "        {\n" +
-            "            \"BalanzaID\": 1,\n" +
-            "            \"ProductoID\": 2,\n" +
-            "            \"Descripcion\": \"Sandwich jamón y queso\",\n" +
-            "            \"Cantidad\": 6,\n" +
-            "            \"PrecioUnitario\": 10\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"BalanzaID\": 1,\n" +
-            "            \"ProductoID\": 4,\n" +
-            "            \"Descripcion\": \"Empanadas de Pollo\",\n" +
-            "            \"Cantidad\": 2,\n" +
-            "            \"PrecioUnitario\": 15\n" +
-            "        }\n" +
-            "    ]\n" +
-            "}";
+    public String mJsonCompra = "";
 
     public String getUrlCompra() {
         return mUrlCompra;
