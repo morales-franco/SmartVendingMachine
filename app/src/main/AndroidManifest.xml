@@ -26,12 +26,14 @@
         <activity
             android:name=".ui.MainMenuActivity"
             android:label="@string/title_activity_main_menu"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".ui.UserHistortyActivity"
             android:label="@string/title_activity_user_historty"
             android:parentActivityName=".ui.MainMenuActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -41,16 +43,24 @@
             android:name=".ui.ConnectDeviceActivity"
             android:label="@string/title_activity_begin_purchase"
             android:parentActivityName=".ui.MainMenuActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.proyectofinal.smartvendingmachine.ui.MainMenuActivity"/>
         </activity>
-        <activity android:name=".ui.connection.ManageBondedDevicesActivity">
+        <activity
+            android:name=".ui.connection.ManageBondedDevicesActivity"
+            android:screenOrientation="portrait">
+
         </activity>
-        <activity android:name=".ui.connection.SelectDeviceToConnectActivity">
+        <activity
+            android:name=".ui.connection.SelectDeviceToConnectActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.connection.BeginPurchaseActivity">
+        <activity
+            android:name=".ui.connection.BeginPurchaseActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
