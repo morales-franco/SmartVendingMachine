@@ -319,7 +319,6 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                             encontrado = TRUE;
                         } else {
                             targetItem.setCantidad(targetItem.getCantidad() - 1);
-                            it.next();
                         }
                     }
                 }
