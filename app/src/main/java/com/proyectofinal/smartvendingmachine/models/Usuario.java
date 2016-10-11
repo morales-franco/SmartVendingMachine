@@ -5,13 +5,10 @@ package com.proyectofinal.smartvendingmachine.models;
  */
 //todo: va?
 public class Usuario {
-
     private  String mUserID;
-    private  String mEmail;
     private  String mUserName;
-    private  String mFirstName;
-    private  String mLastName;
-    private  String mPassword;
+    private  String mNombreCompleto;
+    private  Double mSaldo;
 
     public String getUserID() {
         return mUserID;
@@ -21,12 +18,12 @@ public class Usuario {
         mUserID = userID;
     }
 
-    public String getEmail() {
-        return mEmail;
+    public String getNombreCompleto() {
+        return mNombreCompleto;
     }
 
-    public void setEmail(String email) {
-        mEmail = email;
+    public void setNombreCompleto(String nombreCompleto) {
+        mNombreCompleto = nombreCompleto;
     }
 
     public String getUserName() {
@@ -37,28 +34,12 @@ public class Usuario {
         mUserName = userName;
     }
 
-    public String getFirstName() {
-        return mFirstName;
+    public Double getSaldo() {
+        return mSaldo;
     }
 
-    public void setFirstName(String firstName) {
-        mFirstName = firstName;
-    }
-
-    public String getLastName() {
-        return mLastName;
-    }
-
-    public void setLastName(String lastName) {
-        mLastName = lastName;
-    }
-
-    public String getPassword() {
-        return mPassword;
-    }
-
-    public void setPassword(String password) {
-        mPassword = password;
+    public void setSaldo(Double saldo) {
+        mSaldo = saldo;
     }
 
 

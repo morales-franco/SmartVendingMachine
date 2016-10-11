@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Smart Vending Machine</string>
     <string name="Bienvenidos">Bienvenidos</string>
-    <string name="IngreseDNI">Ingrese DNI</string>
+    <string name="IngreseDNI">Nombre de Usuario</string>
     <string name="Ingresar">Ingresar</string>
     <string name="title_activity_main_menu">Menu Principal</string>
     <string name="title_activity_user_historty">Historial Compras</string>
@@ -45,4 +45,5 @@
     <string name="error_message">Hubo un error, intente nuevamente.</string>
     <string name="error_ok_button">Ok</string>
     <string name="error_red_no_disponible">No esta conectado a la red</string>
+    <string name="Password">Contraseña</string>
 </resources>

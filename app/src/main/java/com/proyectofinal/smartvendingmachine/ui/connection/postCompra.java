@@ -5,6 +5,7 @@ import android.support.annotation.RequiresApi;
 
 import com.proyectofinal.smartvendingmachine.models.Compra;
 import com.proyectofinal.smartvendingmachine.models.Item;
+import com.proyectofinal.smartvendingmachine.utils.Api;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,13 +22,9 @@ import okhttp3.Response;
 
 
 public class PostCompra {
-    public static final String mUrlCompra = "http://smartvendingdev.somee.com/Backoffice/API/Compra/Compra/";
+    //public static final String mUrlCompra = "http://smartvendingdev.somee.com/Backoffice/API/Compra/Compra/";
 
     public String mJsonCompra = "";
-
-    public String getUrlCompra() {
-        return mUrlCompra;
-    }
 
     public String getJsonCompra() {
         return mJsonCompra;
@@ -44,12 +41,11 @@ public class PostCompra {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     String post(Compra compra) throws IOException, JSONException {
-        String url = mUrlCompra;
         String json = this.createJsonCompra(compra);
 
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .url(url)
+                .url(Api.UrlSubmitCompra)
                 .post(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {

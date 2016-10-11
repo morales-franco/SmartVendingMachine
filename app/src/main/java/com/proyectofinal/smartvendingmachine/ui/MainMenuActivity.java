@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.proyectofinal.smartvendingmachine.R;
+import com.proyectofinal.smartvendingmachine.models.Usuario;
+import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -21,6 +23,10 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
 
         ButterKnife.bind(this);
+
+        //Ejemplo de obtener el currentUser de la variable de aplicación
+        Usuario currentUser = ((ApplicationHelper) this.getApplication()).getCurrentUser();
+
 
 //      TODO: Aca habria que cargar los intetent con algo asi como lo que esta abajo:
 //      Intent intent = getIntent();
