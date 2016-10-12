@@ -51,15 +51,19 @@ public class LoginMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_main);
         usuarioRepo = UsuarioRepository.GetInstance(getApplicationContext());
         Usuario currentUser = usuarioRepo.GetCurrentuser();
 
         if(currentUser != null) {
             ((ApplicationHelper) this.getApplication()).setCurrentUser(currentUser);
-             startMainActivity();
+            startMainActivity();
+            finish();
         }
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login_main);
+
+
 
         mLoginButton = (Button) findViewById(R.id.loginButton);
         mUserNameTxt = (EditText) findViewById(R.id.txtUserName);
@@ -108,6 +112,14 @@ public class LoginMainActivity extends AppCompatActivity {
                             JSONObject jsonResponse = new JSONObject(responseStr);
 
                             if(jsonResponse.getBoolean("autenticado")){
+                                Usuario currentUser = new Usuario();
+                                currentUser.setUserID(jsonResponse.getString("userID"));
+                                currentUser.setUserName(jsonResponse.getString("userName"));
+                                currentUser.setNombreCompleto(jsonResponse.getString("nombreCompleto"));
+                                currentUser.setSaldo(jsonResponse.getDouble("saldo"));
+                                ((ApplicationHelper) LoginMainActivity.this.getApplication()).setCurrentUser(currentUser);
+                                usuarioRepo.Insert(currentUser);
+                                startMainActivity();
 
                             }else {
                                 ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Usuario y/o contraseña incorrecta", Toast.LENGTH_SHORT);
