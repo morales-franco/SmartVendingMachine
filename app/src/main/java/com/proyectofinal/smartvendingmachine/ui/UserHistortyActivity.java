@@ -19,6 +19,9 @@ import com.proyectofinal.smartvendingmachine.models.AlertDialogFragment;
 import com.proyectofinal.smartvendingmachine.models.CompraDeHistorial;
 import com.proyectofinal.smartvendingmachine.models.HistorialCompras;
 import com.proyectofinal.smartvendingmachine.models.Item;
+import com.proyectofinal.smartvendingmachine.models.Usuario;
+import com.proyectofinal.smartvendingmachine.utils.Api;
+import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,9 +59,8 @@ public class UserHistortyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_historty);
         ButterKnife.bind(this);
-
-        String userIDUrl = "?userID=ea56c62f-a883-470c-acdf-6afc2e31a7cb";
-        String historyJsonURL = "http://smartvendingdev.somee.com/BackOffice/Api/Compra/HistorialCompras?userID=ea56c62f-a883-470c-acdf-6afc2e31a7cb";
+        Usuario currentUser = ((ApplicationHelper) this.getApplication()).getCurrentUser();
+        String historyJsonURL = Api.UrlGetHistorialCompra + "?userID=" + currentUser.getUserID();
 
         if (isNetworkAvailable()) {
             OkHttpClient client = new OkHttpClient();

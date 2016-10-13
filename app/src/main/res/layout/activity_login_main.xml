@@ -18,11 +18,19 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
+        android:inputType="text"
         android:ems="10"
-        android:id="@+id/documentEditText"
+        android:id="@+id/txtUserName"
         android:hint="@string/IngreseDNI"
         android:editable="false"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/txtPassword"
+        android:hint="@string/Password" />
 
     <Button
         android:layout_width="fill_parent"

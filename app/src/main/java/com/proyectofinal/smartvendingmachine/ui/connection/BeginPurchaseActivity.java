@@ -21,6 +21,8 @@ import com.proyectofinal.smartvendingmachine.R;
 import com.proyectofinal.smartvendingmachine.models.Compra;
 import com.proyectofinal.smartvendingmachine.models.CompraDeHistorial;
 import com.proyectofinal.smartvendingmachine.models.Item;
+import com.proyectofinal.smartvendingmachine.models.Usuario;
+import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +49,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
 
     private static final String TAG = "BeginPurchaseActivity";
     private String DEVICE_ADDRESS = "";
-
+    Usuario currentUser;
 
     private UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
     private BluetoothDevice device;
@@ -58,7 +60,6 @@ public class BeginPurchaseActivity extends AppCompatActivity {
     byte buffer[];
     boolean stopThread;
 
-    private String mUserId = "ea56c62f-a883-470c-acdf-6afc2e31a7cb";
     private String mStringCompraBuffer = "";
     private ArrayList<Item> mItemsCompra = new ArrayList<Item>();
     private Long mExhibidorId;
@@ -85,6 +86,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin_purchase);
         ButterKnife.bind(this);
+        currentUser = ((ApplicationHelper) this.getApplication()).getCurrentUser();
 
         //todo este scroll no va.
         textView.setMovementMethod(new ScrollingMovementMethod());
@@ -142,8 +144,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
 
         Compra compra = new Compra();
 
-        //todo: esta harcodeado el userID
-        compra.setUserId(mUserId);
+        compra.setUserId(currentUser.getUserID());
         compra.setExhibidorId(mExhibidorId);
         compra.setFechaCompra(currentDateTime);
         compra.setItems(itemsCompra);

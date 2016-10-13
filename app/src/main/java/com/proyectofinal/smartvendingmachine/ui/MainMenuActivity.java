@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.proyectofinal.smartvendingmachine.R;
+import com.proyectofinal.smartvendingmachine.models.Usuario;
+import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
+import com.proyectofinal.smartvendingmachine.utils.ToastHelper;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -21,6 +25,10 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
 
         ButterKnife.bind(this);
+
+        //Ejemplo de obtener el currentUser de la variable de aplicación
+        Usuario currentUser = ((ApplicationHelper) this.getApplication()).getCurrentUser();
+        ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Bienvenido " + currentUser.getNombreCompleto(), Toast.LENGTH_SHORT);
 
 //      TODO: Aca habria que cargar los intetent con algo asi como lo que esta abajo:
 //      Intent intent = getIntent();
