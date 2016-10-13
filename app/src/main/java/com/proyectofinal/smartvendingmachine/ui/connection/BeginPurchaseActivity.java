@@ -1,5 +1,6 @@
 package com.proyectofinal.smartvendingmachine.ui.connection;
 
+import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -43,7 +44,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BeginPurchaseActivity extends AppCompatActivity {
+public class BeginPurchaseActivity extends ListActivity {
     private String TRUE = "1";
     private String FALSE = "0";
 
@@ -169,7 +170,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         mItemsCompra.clear();
         JSONObject jsonResponse = new JSONObject(response);
 
-        String responseText = "Success: " + jsonResponse.getString("success") + "\r\\\n" +
+        String responseText = "Exito: " + jsonResponse.getString("success") + "\r\\\n" +
                 "Saldo Actulizado : " + jsonResponse.getString("saldoActualizado");
 
 
@@ -243,7 +244,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                 setUiEnabled(true);
                 deviceConnected = true;
                 beginListenForData();
-                textView.append("\nConnection Opened!\n");
+                textView.append("\nConexion abierta\n");
             }
         }
     }
@@ -347,7 +348,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        textView.append("\nSent Data:" + string + "\n");
+        textView.append("\nInformacion enviada: " + string + "\n");
     }
 
     public void onClickStop(View view) throws IOException {
@@ -367,7 +368,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         }
         setUiEnabled(false);
         deviceConnected = false;
-        textView.append("\nConnection Closed!\n");
+        textView.append("\nFin compra\n");
     }
 
     public void onClickClear(View view) {
