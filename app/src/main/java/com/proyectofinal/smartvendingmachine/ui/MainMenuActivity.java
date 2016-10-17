@@ -2,6 +2,8 @@ package com.proyectofinal.smartvendingmachine.ui;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import com.proyectofinal.smartvendingmachine.R;
 import com.proyectofinal.smartvendingmachine.models.Usuario;
 import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
+import com.proyectofinal.smartvendingmachine.utils.NetworkHelper;
 import com.proyectofinal.smartvendingmachine.utils.ToastHelper;
 
 public class MainMenuActivity extends AppCompatActivity {
@@ -29,6 +32,15 @@ public class MainMenuActivity extends AppCompatActivity {
         //Ejemplo de obtener el currentUser de la variable de aplicación
         Usuario currentUser = ((ApplicationHelper) this.getApplication()).getCurrentUser();
         ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Bienvenido " + currentUser.getNombreCompleto(), Toast.LENGTH_SHORT);
+
+        if (!NetworkHelper.isNetworkAvailable(getSystemService(Context.CONNECTIVITY_SERVICE))) {
+            ToastHelper.backgroundThreadShortToast(getApplicationContext(),"No se encuentra conectado a ninguna RED.", Toast.LENGTH_LONG);
+            mUserHistoryButton.setEnabled(false);
+            mBeginPurchaseButton.setEnabled(false);
+        }else if( currentUser.getSaldo() <= 0 ){
+            ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Usted NO posee saldo por favor comuniquese con el administrador.", Toast.LENGTH_LONG);
+            mBeginPurchaseButton.setEnabled(false);
+        }
 
 //      TODO: Aca habria que cargar los intetent con algo asi como lo que esta abajo:
 //      Intent intent = getIntent();

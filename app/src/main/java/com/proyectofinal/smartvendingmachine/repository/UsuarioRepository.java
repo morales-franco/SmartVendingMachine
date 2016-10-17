@@ -84,4 +84,11 @@ public class UsuarioRepository {
         valores.put(COL_SALDO, entity.getSaldo());
         db.insertOrThrow(TABLE_NAME, null,  valores);
     }
+
+    public void UpdateSaldo(String userID, double saldo){
+        SQLiteDatabase db = dataBaseService.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put(COL_SALDO, saldo);
+        db.update(TABLE_NAME, valores, COL_USER_ID + " = ?", new String[] {userID});
+    }
 }
