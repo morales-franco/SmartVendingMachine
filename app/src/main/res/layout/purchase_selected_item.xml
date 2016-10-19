@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:background="#f31231ca">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="$ 19.99"
+        android:id="@+id/itemMontoLabel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingRight="15dp"
+        android:textColor="#4d9e38"
+        android:layout_centerVertical="true"
+        android:textSize="22sp" android:paddingTop="24dp" android:paddingBottom="24dp"/>
+    <TextView
+        android:text="x1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_alignBottom="@+id/itemMontoLabel"
+        android:layout_toRightOf="@+id/itemDescripcionLabel"
+        android:id="@+id/itemCantidadLabel" android:layout_toLeftOf="@+id/itemMontoLabel"
+        android:layout_toStartOf="@+id/itemMontoLabel" android:textSize="24sp"
+        android:layout_centerVertical="true"
+        android:paddingTop="24dp" android:paddingBottom="24dp" android:paddingRight="10dp"/>
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        tools:text="Alfajor Milka Triple"
+        android:id="@+id/itemDescripcionLabel"
+        android:textSize="24sp"
+        android:paddingLeft="10dp"
+        android:layout_centerVertical="true"
+        android:paddingRight="10dp" android:layout_alignBottom="@+id/itemMontoLabel"
+        android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+        android:paddingBottom="24dp" android:paddingTop="24dp"/>
+
+</RelativeLayout>

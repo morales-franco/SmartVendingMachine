@@ -264,17 +264,17 @@ public class ConnectDeviceActivity extends AppCompatActivity {
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
 
                     mBondedBluetoothDeviceList.add(device);
-                    showToast("Found device already bonded " + device.getName());
+                    showToast("Dispositivo sincronizado: " + device.getName());
 
                 }
                 mAvailableBluetoothDeviceList.add(device);
-                showToast("Found device " + device.getName());
+                showToast("Dispositivo encontrado: " + device.getName());
 
             } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
 
                 //Device is now connected
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                showToast("Connected to device: " + device.getName());
+                showToast("Dispositivo conectado: " + device.getName());
 
             }
         }

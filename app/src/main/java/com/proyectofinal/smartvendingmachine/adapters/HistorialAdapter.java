@@ -44,10 +44,9 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
 
         public HistorialViewHolder(View itemView) {
             super(itemView);
-            //todo: bindear con butterknife
             mFechaLabel = (TextView) itemView.findViewById(R.id.fechaLabel);
-            mItemLabel = (TextView) itemView.findViewById(R.id.itemLabel);
-            mMontoLabel = (TextView) itemView.findViewById(R.id.montoLabel);
+            mItemLabel = (TextView) itemView.findViewById(R.id.itemDescripcionLabel);
+            mMontoLabel = (TextView) itemView.findViewById(R.id.itemMontoLabel);
 
         }
 

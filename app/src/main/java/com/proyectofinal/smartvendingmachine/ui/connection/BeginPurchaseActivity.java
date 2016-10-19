@@ -13,12 +13,14 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.proyectofinal.smartvendingmachine.R;
+import com.proyectofinal.smartvendingmachine.adapters.SelectedItemAdapter;
 import com.proyectofinal.smartvendingmachine.models.Compra;
 import com.proyectofinal.smartvendingmachine.models.CompraDeHistorial;
 import com.proyectofinal.smartvendingmachine.models.Item;
@@ -45,7 +47,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BeginPurchaseActivity extends AppCompatActivity {
+public class BeginPurchaseActivity extends ListActivity {
     private String TRUE = "1";
     private String FALSE = "0";
 
@@ -66,6 +68,8 @@ public class BeginPurchaseActivity extends AppCompatActivity {
     private String mStringCompraBuffer = "";
     private ArrayList<Item> mItemsCompra = new ArrayList<Item>();
     private Long mExhibidorId;
+
+    SelectedItemAdapter mAdapter = new SelectedItemAdapter(this, mItemsCompra);
 
     @BindView(R.id.buttonStart)
     Button startButton;
@@ -92,16 +96,30 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         usuarioRepo = UsuarioRepository.GetInstance(getApplicationContext());
         currentUser = ((ApplicationHelper) this.getApplication()).getCurrentUser();
 
+        setListAdapter(mAdapter);
+
         //todo este scroll no va.
         textView.setMovementMethod(new ScrollingMovementMethod());
 
         Intent intent = getIntent();
         DEVICE_ADDRESS = intent.getStringExtra("device_address");
 
-        showToast("DEVICE_ADDRESS: " + DEVICE_ADDRESS);
-        showToast("DEVICE_NAME: " + intent.getStringExtra("device_name"));
+
+        //todo: borrar
+        showToast("Direccion: " + DEVICE_ADDRESS);
+        showToast("Nombre:  " + intent.getStringExtra("device_name"));
 
         setUiEnabled(false);
+        habilitarConfirmarCompra(false);
+
+        if (BTinit()) {
+            if (BTconnect()) {
+                setUiEnabled(true);
+                deviceConnected = true;
+                beginListenForData();
+                showToast("\nConexion abierta\n");
+            }
+        }
 
         mConfirmarCompraButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -121,6 +139,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                 thread.start();
                 showToast("Compra Confirmada");
 
+
                 //todo: limpio el array mItemsCompra??
             }
         });
@@ -137,6 +156,11 @@ public class BeginPurchaseActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void habilitarConfirmarCompra(boolean b) {
+        mConfirmarCompraButton.setEnabled(b);
+        mCancelarCompraButton.setEnabled(!b);
     }
 
     private Compra armarCompra(ArrayList<Item> itemsCompra) {
@@ -156,7 +180,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         long montoTotal = 0;
         while (it.hasNext()) {
             Item item = it.next();
-            montoTotal += item.getPrecioUnitario()*item.getCantidad();
+            montoTotal += item.getPrecioUnitario() * item.getCantidad();
         }
 
         compra.setMonto(montoTotal);
@@ -172,7 +196,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         mItemsCompra.clear();
         JSONObject jsonResponse = new JSONObject(response);
 
-        String responseText = "Success: " + jsonResponse.getString("success") + "\r\\\n" +
+       String responseText = "Success: " + jsonResponse.getString("success") + "\r\\\n" +
                 "Saldo Actualizado : " + jsonResponse.getString("saldoActualizado");
 
 
@@ -260,7 +284,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                 setUiEnabled(true);
                 deviceConnected = true;
                 beginListenForData();
-                textView.append("\nConnection Opened!\n");
+                textView.append("\nConexion abierta\n");
             }
         }
     }
@@ -287,18 +311,18 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                                     mStringCompraBuffer = mStringCompraBuffer + string;
                                     if (mStringCompraBuffer.toLowerCase().contains("}".toLowerCase())) {
                                         textView.append(mStringCompraBuffer);
+                                        setListAdapter(mAdapter);
                                         try {
                                             procesarAccion(mStringCompraBuffer);
+                                            setListAdapter(mAdapter);
 
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
                                         mStringCompraBuffer = "";
-
                                     }
                                 }
                             });
-
                         }
                     } catch (IOException ex) {
                         stopThread = true;
@@ -323,6 +347,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         String esDevolucion = jsonItem.getString("EsDevolucion");
 
         if (mItemsCompra.size() == 0) {
+            habilitarConfirmarCompra(true);
             mExhibidorId = Long.parseLong(jsonItem.getString("IdExhibidor"), 10);
             mItemsCompra.add(item);
         } else {
@@ -340,7 +365,11 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                         }
                     }
                 }
+                if (mItemsCompra.size() == 0) {
+                    habilitarConfirmarCompra(false);
+                }
             } else {
+                habilitarConfirmarCompra(true);
                 while (it.hasNext() && (encontrado == FALSE)) {
                     Item targetItem = it.next();
                     if ((targetItem.getProductoID() == item.getProductoID())) {
@@ -348,7 +377,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
                         encontrado = TRUE;
                     }
                 }
-                if(encontrado == FALSE){
+                if (encontrado == FALSE) {
                     mItemsCompra.add(item);
                 }
             }
@@ -364,7 +393,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        textView.append("\nSent Data:" + string + "\n");
+        textView.append("\nInformacion enviada: " + string + "\n");
     }
 
     public void onClickStop(View view) throws IOException {
@@ -384,7 +413,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         }
         setUiEnabled(false);
         deviceConnected = false;
-        textView.append("\nConnection Closed!\n");
+        textView.append("\nFin compra\n");
     }
 
     public void onClickClear(View view) {
