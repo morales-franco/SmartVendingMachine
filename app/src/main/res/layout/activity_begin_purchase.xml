@@ -10,6 +10,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.proyectofinal.smartvendingmachine.ui.connection.BeginPurchaseActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selección de Productos"
+        android:id="@+id/menuPrincipalLabel"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/beginPurchaseButton"
+        android:textAlignment="center"/>
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +30,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true" android:visibility="gone"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -28,7 +40,7 @@
         android:layout_below="@+id/editText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="onClickStart"/>
+        android:onClick="onClickStart" android:visibility="gone"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -38,13 +50,11 @@
         android:onClick="onClickSend"
         android:layout_below="@+id/editText"
         android:layout_toRightOf="@+id/buttonStart"
-        android:layout_toEndOf="@+id/buttonStart" />
+        android:layout_toEndOf="@+id/buttonStart" android:visibility="gone"/>
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/textView"
-        android:layout_below="@+id/buttonSend"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/editText"
@@ -52,7 +62,8 @@
         android:minLines="1"
         android:maxLines = "400"
         android:scrollbars = "vertical"
-        android:layout_above="@+id/confirmarCompraButton"/>
+        android:layout_above="@+id/confirmarCompraButton"
+        android:elevation="1dp" android:visibility="invisible" android:layout_height="20dp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -62,7 +73,7 @@
         android:layout_below="@+id/editText"
         android:layout_toRightOf="@+id/buttonSend"
         android:layout_toEndOf="@+id/buttonSend"
-        android:onClick="onClickStop"/>
+        android:onClick="onClickStop" android:visibility="gone"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -72,7 +83,7 @@
         android:layout_below="@+id/editText"
         android:layout_toRightOf="@+id/buttonStop"
         android:layout_toEndOf="@+id/buttonStop"
-        android:onClick="onClickClear"/>
+        android:onClick="onClickClear" android:visibility="gone"/>
 
     <Button
         android:layout_width="match_parent"
@@ -95,5 +106,23 @@
         android:background="#FFDC2424"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"/>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/textView" android:layout_below="@+id/menuPrincipalLabel"/>
+
+    <TextView
+        android:text="@string/levante_un_producto_para_iniciar_la_compra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@android:id/empty"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp" android:textColor="@color/colorPrimary"
+        android:textAlignment="center"/>
 
 </RelativeLayout>

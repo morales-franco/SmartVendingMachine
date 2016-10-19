@@ -46,4 +46,7 @@
     <string name="error_ok_button">Ok</string>
     <string name="error_red_no_disponible">No esta conectado a la red</string>
     <string name="Password">Contraseña</string>
+    <string name="levante_un_producto_para_iniciar_la_compra">Levante un producto para iniciar la
+        compra
+    </string>
 </resources>
