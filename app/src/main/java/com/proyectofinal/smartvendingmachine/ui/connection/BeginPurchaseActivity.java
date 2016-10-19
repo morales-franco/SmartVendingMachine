@@ -1,5 +1,6 @@
 package com.proyectofinal.smartvendingmachine.ui.connection;
 
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -354,7 +355,7 @@ public class BeginPurchaseActivity extends ListActivity {
             Iterator<Item> it = mItemsCompra.iterator();
             String encontrado = FALSE;
             if (esDevolucion == TRUE) {
-                while (it.hasNext() && (encontrado == FALSE)) {
+                while (it.hasNext() && (encontrado.equals(FALSE))) {
                     Item targetItem = it.next();
                     if ((targetItem.getProductoID() == item.getProductoID())) {
                         if (targetItem.getCantidad() <= 1) {
