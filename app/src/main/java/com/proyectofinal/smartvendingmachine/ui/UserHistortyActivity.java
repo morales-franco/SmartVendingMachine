@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,14 +44,17 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.proyectofinal.smartvendingmachine.R.id.recyclerView;
+
 public class UserHistortyActivity extends AppCompatActivity {
 
     private HistorialCompras mHistorialCompras = new HistorialCompras();
 
-    @BindView(R.id.recyclerView)
+    @BindView(recyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.saldoLabel)
     TextView mSaldoLabel;
+    @BindView(R.id.empty_view) TextView mEmptyView;
 
     public static final String TAG = UserHistortyActivity.class.getSimpleName();
 
@@ -59,8 +63,14 @@ public class UserHistortyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_historty);
         ButterKnife.bind(this);
-        Usuario currentUser = ((ApplicationHelper) this.getApplication()).getCurrentUser();
+
+        final Usuario currentUser = ((ApplicationHelper) this.getApplication()).getCurrentUser();
         String historyJsonURL = Api.UrlGetHistorialCompra + "?userID=" + currentUser.getUserID();
+
+        mRecyclerView.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.VISIBLE);
+
+        currentUser.getSaldo();
 
         if (isNetworkAvailable()) {
             OkHttpClient client = new OkHttpClient();
@@ -83,7 +93,7 @@ public class UserHistortyActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    updateDisplay();
+                                    updateDisplay(currentUser);
                                 }
                             });
                         } else {
@@ -102,21 +112,24 @@ public class UserHistortyActivity extends AppCompatActivity {
         }
     }
 
-    private void updateDisplay() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00"));
-        Date currentLocalTime = cal.getTime();
-        DateFormat date = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-
-        String currentDateTimeString = date.format(currentLocalTime);
+    private void updateDisplay(Usuario currentUser) {
 
         HistorialAdapter adapter = new HistorialAdapter(mHistorialCompras.getCompraDeHistorials());
+
+        if (adapter.getItemCount() == 0) {
+            mEmptyView.setText("Usted no posee compras");
+            mEmptyView.setVisibility(View.VISIBLE);
+        } else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        }
+
         mRecyclerView.setAdapter(adapter);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        //todo: cambiar esto a el dato real.
-        mSaldoLabel.setText(currentDateTimeString);
+        mSaldoLabel.setText("$ "+currentUser.getSaldo());
     }
 
     private HistorialCompras getUserDetails(String jsonData) throws JSONException {
