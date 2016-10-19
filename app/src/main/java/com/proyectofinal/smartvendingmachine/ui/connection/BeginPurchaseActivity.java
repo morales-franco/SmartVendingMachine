@@ -9,12 +9,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,7 +21,6 @@ import android.widget.Toast;
 import com.proyectofinal.smartvendingmachine.R;
 import com.proyectofinal.smartvendingmachine.adapters.SelectedItemAdapter;
 import com.proyectofinal.smartvendingmachine.models.Compra;
-import com.proyectofinal.smartvendingmachine.models.CompraDeHistorial;
 import com.proyectofinal.smartvendingmachine.models.Item;
 import com.proyectofinal.smartvendingmachine.models.Usuario;
 import com.proyectofinal.smartvendingmachine.repository.UsuarioRepository;
@@ -49,8 +46,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BeginPurchaseActivity extends ListActivity {
-    private String TRUE = "1";
-    private String FALSE = "0";
+    private static final String TRUE = "1";
+    private static final String FALSE = "0";
 
     private static final String TAG = "BeginPurchaseActivity";
     private String DEVICE_ADDRESS = "";
@@ -67,7 +64,7 @@ public class BeginPurchaseActivity extends ListActivity {
     boolean stopThread;
 
     private String mStringCompraBuffer = "";
-    private ArrayList<Item> mItemsCompra = new ArrayList<Item>();
+    private ArrayList<Item> mItemsCompra = new ArrayList<>();
     private Long mExhibidorId;
 
     SelectedItemAdapter mAdapter = new SelectedItemAdapter(this, mItemsCompra);
