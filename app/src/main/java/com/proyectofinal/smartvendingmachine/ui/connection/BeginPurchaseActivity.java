@@ -1,5 +1,6 @@
 package com.proyectofinal.smartvendingmachine.ui.connection;
 
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -22,6 +23,7 @@ import com.proyectofinal.smartvendingmachine.models.Compra;
 import com.proyectofinal.smartvendingmachine.models.CompraDeHistorial;
 import com.proyectofinal.smartvendingmachine.models.Item;
 import com.proyectofinal.smartvendingmachine.models.Usuario;
+import com.proyectofinal.smartvendingmachine.repository.UsuarioRepository;
 import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
 
 import org.json.JSONException;
@@ -50,6 +52,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
     private static final String TAG = "BeginPurchaseActivity";
     private String DEVICE_ADDRESS = "";
     Usuario currentUser;
+    UsuarioRepository usuarioRepo;
 
     private UUID PORT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");//Serial Port Service ID
     private BluetoothDevice device;
@@ -86,6 +89,7 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin_purchase);
         ButterKnife.bind(this);
+        usuarioRepo = UsuarioRepository.GetInstance(getApplicationContext());
         currentUser = ((ApplicationHelper) this.getApplication()).getCurrentUser();
 
         //todo este scroll no va.
@@ -143,7 +147,6 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         String currentDateTime = date.format(currentLocalTime);
 
         Compra compra = new Compra();
-
         compra.setUserId(currentUser.getUserID());
         compra.setExhibidorId(mExhibidorId);
         compra.setFechaCompra(currentDateTime);
@@ -170,8 +173,22 @@ public class BeginPurchaseActivity extends AppCompatActivity {
         JSONObject jsonResponse = new JSONObject(response);
 
         String responseText = "Success: " + jsonResponse.getString("success") + "\r\\\n" +
-                "Saldo Actulizado : " + jsonResponse.getString("saldoActualizado");
+                "Saldo Actualizado : " + jsonResponse.getString("saldoActualizado");
 
+
+
+
+        boolean success = jsonResponse.getBoolean("success");
+        //Actualizo nuevo saldo
+        if(success)
+        {
+            //ProgressDialog progressDialog  = ProgressDialog.show(BeginPurchaseActivity.this, "", "Espere por favor...", true);
+            double saldoActualizado = jsonResponse.getDouble("saldoActualizado");
+            ((ApplicationHelper) BeginPurchaseActivity.this.getApplication()).updateSaldo(saldoActualizado);
+            usuarioRepo.UpdateSaldo(currentUser.getUserID(), saldoActualizado);
+            //progressDialog.dismiss();
+
+        }
 
         textView.setText(responseText.replace("\\\n", System.getProperty("line.separator")));
     }

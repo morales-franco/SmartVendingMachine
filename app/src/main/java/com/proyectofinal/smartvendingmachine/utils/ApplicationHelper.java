@@ -16,4 +16,8 @@ public class ApplicationHelper extends android.app.Application {
         this.currentUser = currentUser;
     }
 
+    public void updateSaldo(double saldo) {
+        this.currentUser.setSaldo(saldo);
+    }
+
 }
