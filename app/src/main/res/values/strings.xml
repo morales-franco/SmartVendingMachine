@@ -49,4 +49,5 @@
     <string name="levante_un_producto_para_iniciar_la_compra">Levante un producto para iniciar la
         compra
     </string>
+    <string name="_saldo_sin_actualizar">$0.00</string>
 </resources>

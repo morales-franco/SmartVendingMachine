@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="$0.0"
+        android:text="@string/_saldo_sin_actualizar"
         android:id="@+id/saldoLabel"
         android:textSize="18sp"
         android:textColor="#FF000000"

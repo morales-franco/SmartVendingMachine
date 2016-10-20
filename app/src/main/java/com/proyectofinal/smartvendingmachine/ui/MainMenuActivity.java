@@ -42,13 +42,6 @@ public class MainMenuActivity extends AppCompatActivity {
             mBeginPurchaseButton.setEnabled(false);
         }
 
-//      TODO: Aca habria que cargar los intetent con algo asi como lo que esta abajo:
-//      Intent intent = getIntent();
-//      mName  = intent.getStringExtra(getString(R.string.key_name));
-
- //       mUserHistoryButton = (Button) findViewById(R.id.userHistoryButton);
- //       mBeginPurchaseButton = (Button) findViewById(R.id.beginPurchaseButton);
-
         mUserHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,15 +60,11 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void startUserHistoryActivity(){
         Intent intent = new Intent(this, UserHistortyActivity.class);
-        //TODO: Aca se mandarian los extra que haya que mandarle a la main activity
-        //intent.putExtra(getString(R.string.key_name),name);
         startActivity(intent);
     }
 
     private void startBeginPurchaseActivity(){
         Intent intent = new Intent(this, ConnectDeviceActivity.class);
-        //TODO: Aca se mandarian los extra que haya que mandarle a la main activity
-        //intent.putExtra(getString(R.string.key_name),name);
         startActivity(intent);
     }
 }
