@@ -45,6 +45,7 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class BeginPurchaseActivity extends ListActivity {
     private static final String TRUE = "1";
@@ -148,7 +149,26 @@ public class BeginPurchaseActivity extends ListActivity {
                     }
                 });
                 thread.start();
-                showToast("Compra Confirmada");
+
+                SweetAlertDialog pDialog = new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                pDialog.setTitleText("Exito");
+                pDialog.setContentText("Muchas gracias por su compra!");
+                pDialog.setConfirmText("Aceptar");
+                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                        try {
+                            terminateConnection();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        finish();
+                    }
+                });
+                pDialog.show();
+
+
 
 
                 //todo: limpio el array mItemsCompra??

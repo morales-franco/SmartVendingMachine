@@ -48,6 +48,7 @@ public class SelectDeviceToConnectActivity extends AppCompatActivity {
                 intent.putExtra("device_name",device.getName());
                 intent.putExtra("device_address",device.getAddress());
                 startActivity(intent);
+                finish();
 
             }
         });
