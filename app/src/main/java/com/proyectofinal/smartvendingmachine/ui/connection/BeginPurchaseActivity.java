@@ -84,7 +84,7 @@ public class BeginPurchaseActivity extends ListActivity {
     @BindView(R.id.editText)
     EditText editText;
     //    @BindView(R.id.textViewDebugg)
-//    TextView textView;
+    //    TextView textView;
     @BindView(R.id.textViewTotal)
     TextView textViewTotal;
     @BindView(R.id.textViewMontoCompra)
@@ -149,28 +149,7 @@ public class BeginPurchaseActivity extends ListActivity {
                     }
                 });
                 thread.start();
-
-                SweetAlertDialog pDialog = new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.SUCCESS_TYPE);
-                pDialog.setTitleText("Exito");
-                pDialog.setContentText("Muchas gracias por su compra!");
-                pDialog.setConfirmText("Aceptar");
-                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                        try {
-                            terminateConnection();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        finish();
-                    }
-                });
-                pDialog.show();
-
-
-
-
+                compraExitosaDialog();
                 //todo: limpio el array mItemsCompra??
             }
         });
@@ -187,6 +166,26 @@ public class BeginPurchaseActivity extends ListActivity {
             }
         });
 
+    }
+
+    private void compraExitosaDialog() {
+        SweetAlertDialog pDialog = new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+        pDialog.setTitleText("Exito");
+        pDialog.setContentText("Muchas gracias por su compra!");
+        pDialog.setConfirmText("Aceptar");
+        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sDialog) {
+                sDialog.dismissWithAnimation();
+                try {
+                    terminateConnection();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                finish();
+            }
+        });
+        pDialog.show();
     }
 
     private void mostrarSaldo(Double saldo) {
@@ -390,11 +389,19 @@ public class BeginPurchaseActivity extends ListActivity {
                 textViewTotal.setTextColor(Color.parseColor("#FFDC2424"));
                 textViewMontoCompra.setTextColor(Color.parseColor("#FFDC2424"));
                 mConfirmarCompraButton.setEnabled(false);
+                SaldoInsuficienteAlert();
             }
         } else {
             textViewMontoCompra.setVisibility(View.INVISIBLE);
             textViewTotal.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private void SaldoInsuficienteAlert() {
+        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("Saldo Insuficiente")
+                .setContentText("Por favor, devuelva el producto al exhibidor.")
+                .show();
     }
 
     private void procesarAccion(String stringCompraBuffer) throws JSONException {
