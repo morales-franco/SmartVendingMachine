@@ -30,6 +30,8 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.proyectofinal.smartvendingmachine.R.drawable.ic_bluetooth_black_48dp;
+
 public class ConnectDeviceActivity extends AppCompatActivity {
 
     private ArrayList<BluetoothDevice> mBondedBluetoothDeviceList = new ArrayList<>();
@@ -177,15 +179,14 @@ public class ConnectDeviceActivity extends AppCompatActivity {
     private void showEnabled() {
         mStatusBluetoothTextView.setText(R.string.bluetooth_on);
         mStatusBluetoothTextView.setTextColor(Color.BLUE);
-
-//        mEnableBluetoothButton.setText(R.string.bluetooth_disable);
-//        mEnableBluetoothButton.setEnabled(true);
-
         mEnableBluetoothSwitch.setText(R.string.bluetooth_disable);
 
-        //mPairedBtn.setEnabled(true);
         mScanBluetoothDevicesButton.setEnabled(true);
         mEnableBluetoothSwitch.setChecked(true);
+
+        mScanBluetoothDevicesButton.setColorFilter(Color.parseColor("#a9a9a9"));
+        mScanBluetoothDevicesButton.setImageResource(R.drawable.ic_bluetooth_searching_black_48dp);
+        mScanBluetoothDevicesButton.setEnabled(true);
         enableBondButton();
     }
 
@@ -194,12 +195,11 @@ public class ConnectDeviceActivity extends AppCompatActivity {
 
         mStatusBluetoothTextView.setTextColor(Color.RED);
 
-//        mEnableBluetoothButton.setText(R.string.bluetooth_enable);
-//        mEnableBluetoothButton.setEnabled(true);
-
         mEnableBluetoothSwitch.setText(R.string.bluetooth_enable);
         mEnableBluetoothSwitch.setChecked(false);
-        //mPairedBtn.setEnabled(false);
+
+        mScanBluetoothDevicesButton.setColorFilter(Color.parseColor("#a9a9a9"));
+        mScanBluetoothDevicesButton.setImageResource(R.drawable.ic_bluetooth_disabled_black_48dp);
         mScanBluetoothDevicesButton.setEnabled(false);
         enableBondButton();
     }

@@ -149,6 +149,7 @@ public class BeginPurchaseActivity extends ListActivity {
                     }
                 });
                 thread.start();
+
                 compraExitosaDialog();
                 //todo: limpio el array mItemsCompra??
             }
