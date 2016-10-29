@@ -1,7 +1,6 @@
 package com.proyectofinal.smartvendingmachine.ui.connection;
 
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -11,7 +10,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -150,7 +148,7 @@ public class BeginPurchaseActivity extends ListActivity {
                 });
                 thread.start();
 
-                compraExitosaDialog();
+
                 //todo: limpio el array mItemsCompra??
             }
         });
@@ -169,7 +167,7 @@ public class BeginPurchaseActivity extends ListActivity {
 
     }
 
-    private void compraExitosaDialog() {
+    private void showCompraExitosaDialog(boolean text) {
         SweetAlertDialog pDialog = new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.SUCCESS_TYPE);
         pDialog.setTitleText("Exito");
         pDialog.setContentText("Muchas gracias por su compra!");
@@ -233,8 +231,7 @@ public class BeginPurchaseActivity extends ListActivity {
         PostCompra postCompra = new PostCompra();
         String response = postCompra.post(compra);
 
-        mItemsCompra.clear();
-        JSONObject jsonResponse = new JSONObject(response);
+        final JSONObject jsonResponse = new JSONObject(response);
 
         String responseText = "Success: " + jsonResponse.getString("success") + "\r\\\n" +
                 "Saldo Actualizado : " + jsonResponse.getString("saldoActualizado");
@@ -243,11 +240,27 @@ public class BeginPurchaseActivity extends ListActivity {
         boolean success = jsonResponse.getBoolean("success");
         //Actualizo nuevo saldo
         if (success) {
+            mItemsCompra.clear();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        showCompraExitosaDialog(jsonResponse.getBoolean("saldoActualizado"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+//            showCompraExitosaDialog();
             //ProgressDialog progressDialog  = ProgressDialog.show(BeginPurchaseActivity.this, "", "Espere por favor...", true);
             double saldoActualizado = jsonResponse.getDouble("saldoActualizado");
             ((ApplicationHelper) BeginPurchaseActivity.this.getApplication()).updateSaldo(saldoActualizado);
             usuarioRepo.UpdateSaldo(currentUser.getUserID(), saldoActualizado);
             //progressDialog.dismiss();
+
+        } else {
+            showErrorDialog("Error en la compra", "Por favor contactese con el administrador");
 
         }
 
@@ -382,15 +395,15 @@ public class BeginPurchaseActivity extends ListActivity {
             textViewMontoCompra.setText("$" + getMontoTotal(mItemsCompra));
             textViewMontoCompra.setVisibility(View.VISIBLE);
             textViewTotal.setVisibility(View.VISIBLE);
-            if(mSaldoUsuario >= getMontoTotal(mItemsCompra)){
+            if (mSaldoUsuario >= getMontoTotal(mItemsCompra)) {
                 textViewTotal.setTextColor(Color.parseColor("#FFAAAAAA"));
                 textViewMontoCompra.setTextColor(Color.parseColor("#FFAAAAAA"));
                 mConfirmarCompraButton.setEnabled(true);
-            }else{
+            } else {
                 textViewTotal.setTextColor(Color.parseColor("#FFDC2424"));
                 textViewMontoCompra.setTextColor(Color.parseColor("#FFDC2424"));
                 mConfirmarCompraButton.setEnabled(false);
-                SaldoInsuficienteAlert();
+                showErrorDialog("Saldo Insuficiente","Por favor, devuelva el producto al exhibidor.");
             }
         } else {
             textViewMontoCompra.setVisibility(View.INVISIBLE);
@@ -398,10 +411,10 @@ public class BeginPurchaseActivity extends ListActivity {
         }
     }
 
-    private void SaldoInsuficienteAlert() {
+    private void showErrorDialog(String title, String text){
         new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("Saldo Insuficiente")
-                .setContentText("Por favor, devuelva el producto al exhibidor.")
+                .setTitleText(title)
+                .setContentText(text)
                 .show();
     }
 

@@ -2,7 +2,11 @@ package com.proyectofinal.smartvendingmachine.ui;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,14 +17,23 @@ import android.widget.Toast;
 
 import com.proyectofinal.smartvendingmachine.R;
 import com.proyectofinal.smartvendingmachine.models.Usuario;
+import com.proyectofinal.smartvendingmachine.services.usuarioService;
+import com.proyectofinal.smartvendingmachine.ui.connection.BeginPurchaseActivity;
+import com.proyectofinal.smartvendingmachine.utils.Api;
 import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
 import com.proyectofinal.smartvendingmachine.utils.NetworkHelper;
 import com.proyectofinal.smartvendingmachine.utils.ToastHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class MainMenuActivity extends AppCompatActivity {
 
     @BindView(R.id.userHistoryButton) Button mUserHistoryButton;
     @BindView(R.id.beginPurchaseButton) Button mBeginPurchaseButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,4 +80,6 @@ public class MainMenuActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ConnectDeviceActivity.class);
         startActivity(intent);
     }
+
+
 }
