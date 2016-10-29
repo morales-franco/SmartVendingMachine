@@ -151,7 +151,7 @@
         android:id="@android:id/empty"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textSize="30sp" android:textColor="@color/colorPrimary"
+        android:textSize="30sp" android:textColor="@color/colorPrimaryDark"
         android:textAlignment="center"/>
     <TextView
         android:text="TextView"
