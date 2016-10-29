@@ -8,13 +8,13 @@
     <string name="title_activity_user_account">Mi Cuenta</string>
     <string name="title_activity_begin_purchase">Ejecutando Compra</string>
 
-    <string name="text_bluetooth_off">Bluetooth is Off</string>
-    <string name="text_bluetooth_on">Bluetooth is On</string>
+    <string name="text_bluetooth_off">Bluetooth Apagado, Enciéndalo</string>
+    <string name="text_bluetooth_on">Bluetooth Encendido</string>
 
-    <string name="text_enable">Enable</string>
-    <string name="text_disable">Disable</string>
+    <string name="text_enable">Activar</string>
+    <string name="text_disable">Desactivar</string>
 
-    <string name="text_view_paired">Paired Devices</string>
+    <string name="text_view_paired">Dispositivos Vinculados</string>
     <string name="text_scan_devices">Sincronización Dispositivos</string>
     <string name="text_connect_devices">Conectar Dispositivos</string>
     <string name="text_stop_scan">Escanear dispositivos</string>
