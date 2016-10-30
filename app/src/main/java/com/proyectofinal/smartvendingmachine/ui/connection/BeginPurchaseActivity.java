@@ -147,7 +147,7 @@ public class BeginPurchaseActivity extends ListActivity {
                     }
                 });
                 thread.start();
-
+                showCompraExitosaDialog("Exito");
 
                 //todo: limpio el array mItemsCompra??
             }
@@ -167,7 +167,7 @@ public class BeginPurchaseActivity extends ListActivity {
 
     }
 
-    private void showCompraExitosaDialog(boolean text) {
+    private void showCompraExitosaDialog(String text) {
         SweetAlertDialog pDialog = new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.SUCCESS_TYPE);
         pDialog.setTitleText("Exito");
         pDialog.setContentText("Muchas gracias por su compra!");
@@ -238,20 +238,12 @@ public class BeginPurchaseActivity extends ListActivity {
 
 
         boolean success = jsonResponse.getBoolean("success");
+
         //Actualizo nuevo saldo
         if (success) {
             mItemsCompra.clear();
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        showCompraExitosaDialog(jsonResponse.getBoolean("saldoActualizado"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
 
-                }
-            });
+
 //            showCompraExitosaDialog();
             //ProgressDialog progressDialog  = ProgressDialog.show(BeginPurchaseActivity.this, "", "Espere por favor...", true);
             double saldoActualizado = jsonResponse.getDouble("saldoActualizado");
