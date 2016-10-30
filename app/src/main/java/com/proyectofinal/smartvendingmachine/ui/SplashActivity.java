@@ -69,7 +69,6 @@ public class SplashActivity extends AppCompatActivity {
                         String responseStr = response.body().string();
                         try {
                             JSONObject jsonResponse = new JSONObject(responseStr);
-
                             if(jsonResponse != null){
                                 double saldoActualizado = jsonResponse.getDouble("saldo");
                                 ((ApplicationHelper) SplashActivity.this.getApplication()).updateSaldo(saldoActualizado);

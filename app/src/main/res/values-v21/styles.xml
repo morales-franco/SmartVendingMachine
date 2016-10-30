@@ -21,7 +21,7 @@
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
         <item name="android:textColorSecondaryInverse">@color/colorPrimaryDark</item>
-        <item name="android:textColorPrimaryInverse">@color/blue_btn_bg_pressed_color</item>
+        <item name="android:textColorPrimaryInverse">@color/colorPrimaryDark</item>
     </style>
 
 </resources>

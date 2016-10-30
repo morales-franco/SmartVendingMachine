@@ -260,8 +260,7 @@ public class BeginPurchaseActivity extends ListActivity {
             //progressDialog.dismiss();
 
         } else {
-            showErrorDialog("Error en la compra", "Por favor contactese con el administrador");
-
+            Log.v("BeginPuerchase", "Error en la compra. Por favor contactese con el administrador. " + jsonResponse.getString("response"));
         }
 
 //        textViewDebugg.setText(responseText.replace("\\\n", System.getProperty("line.separator")));
