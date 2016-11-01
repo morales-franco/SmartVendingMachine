@@ -1,7 +1,6 @@
 package com.proyectofinal.smartvendingmachine.ui.connection;
 
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -12,10 +11,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +23,6 @@ import com.proyectofinal.smartvendingmachine.models.Item;
 import com.proyectofinal.smartvendingmachine.models.Usuario;
 import com.proyectofinal.smartvendingmachine.repository.UsuarioRepository;
 import com.proyectofinal.smartvendingmachine.services.CompraService;
-import com.proyectofinal.smartvendingmachine.services.usuarioService;
-import com.proyectofinal.smartvendingmachine.ui.LoginMainActivity;
 import com.proyectofinal.smartvendingmachine.utils.Api;
 import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
 import com.proyectofinal.smartvendingmachine.utils.NetworkHelper;
@@ -81,6 +76,7 @@ public class BeginPurchaseActivity extends ListActivity {
     private Long mExhibidorId;
 
     SelectedItemAdapter mAdapter = new SelectedItemAdapter(this, mItemsCompra);
+    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
 
     //    @BindView(R.id.textViewDebugg)
@@ -146,6 +142,7 @@ public class BeginPurchaseActivity extends ListActivity {
                     e.printStackTrace();
                 }
 
+                mItemsCompra.clear();
                 //todo: limpio el array mItemsCompra??
             }
         });
@@ -182,6 +179,7 @@ public class BeginPurchaseActivity extends ListActivity {
             }
         });
         pDialog.show();
+        mBluetoothAdapter.disable();
     }
 
     private void mostrarSaldo(Double saldo) {
@@ -360,11 +358,11 @@ public class BeginPurchaseActivity extends ListActivity {
 
     public boolean BTinit() {
         boolean found = false;
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter == null) {
+
+        if (mBluetoothAdapter == null) {
             Toast.makeText(getApplicationContext(), R.string.bluetooth_unsopported_message, Toast.LENGTH_SHORT).show();
         }
-        if (!bluetoothAdapter.isEnabled()) {
+        if (!mBluetoothAdapter.isEnabled()) {
             Intent enableAdapter = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableAdapter, 0);
             try {
@@ -373,7 +371,7 @@ public class BeginPurchaseActivity extends ListActivity {
                 e.printStackTrace();
             }
         }
-        Set<BluetoothDevice> bondedDevices = bluetoothAdapter.getBondedDevices();
+        Set<BluetoothDevice> bondedDevices = mBluetoothAdapter.getBondedDevices();
         if (bondedDevices.isEmpty()) {
             Toast.makeText(getApplicationContext(), R.string.pair_device_first_message, Toast.LENGTH_SHORT).show();
         } else {
