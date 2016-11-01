@@ -252,7 +252,10 @@ public class BeginPurchaseActivity extends ListActivity {
 //                        progressDialog.dismiss();
                     runOnUiThread(new Runnable() {
                         @Override
-                        public void run() {procesandoCompraDialog.hide();  }
+                        public void run() {
+                            procesandoCompraDialog.hide();
+                            showErrorDialog("Error al conectarse con el servidor", "Por favor contáctese con el administrador.");
+                              }
                 });
                 }
 
@@ -279,14 +282,26 @@ public class BeginPurchaseActivity extends ListActivity {
                                 });
 
                             }else {
-                                ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Error", Toast.LENGTH_SHORT);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        procesandoCompraDialog.hide();
+                                        showErrorDialog("Error al conectarse con el servidor", "Por favor contáctese con el administrador.");
+                                    }
+                                });
                             }
                         }catch (JSONException e) {
                             e.printStackTrace();
                         }
 
                     } else {
-                        ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Respuesta del Servidor Incorrecta", Toast.LENGTH_SHORT);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                procesandoCompraDialog.hide();
+                                showErrorDialog("Respuesta del Servidor Incorrecta", "Por favor contáctese con el administrador.");
+                            }
+                        });
                     }
                     runOnUiThread(new Runnable() {
                         @Override
@@ -297,7 +312,13 @@ public class BeginPurchaseActivity extends ListActivity {
                 }
             });
         } else {
-            Toast.makeText(this, R.string.error_red_no_disponible, Toast.LENGTH_LONG).show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    procesandoCompraDialog.hide();
+                    showErrorDialog("No esta conectado a la red", "Por favor contáctese con el administrador.");
+                }
+            });
         }
 
 
