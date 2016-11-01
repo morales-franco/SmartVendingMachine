@@ -6,9 +6,7 @@ package com.proyectofinal.smartvendingmachine.models;
 
 public class Item {
     private long mProductoID;
-
     private String mDescripcion;
-
     private double mPrecioUnitario;
     private long mCantidad;
     private double mPrecio;

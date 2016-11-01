@@ -53,7 +53,7 @@ public class PostCompra {
         }
     }
 
-    private String createJsonCompra(Compra compra) throws JSONException {
+    public String createJsonCompra(Compra compra) throws JSONException {
         JSONObject jsonCompra = new JSONObject();
         JSONObject item = new JSONObject();
 

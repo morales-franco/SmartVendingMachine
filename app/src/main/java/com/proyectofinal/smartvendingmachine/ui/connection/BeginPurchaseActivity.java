@@ -1,9 +1,11 @@
 package com.proyectofinal.smartvendingmachine.ui.connection;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -23,7 +25,13 @@ import com.proyectofinal.smartvendingmachine.models.Compra;
 import com.proyectofinal.smartvendingmachine.models.Item;
 import com.proyectofinal.smartvendingmachine.models.Usuario;
 import com.proyectofinal.smartvendingmachine.repository.UsuarioRepository;
+import com.proyectofinal.smartvendingmachine.services.CompraService;
+import com.proyectofinal.smartvendingmachine.services.usuarioService;
+import com.proyectofinal.smartvendingmachine.ui.LoginMainActivity;
+import com.proyectofinal.smartvendingmachine.utils.Api;
 import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
+import com.proyectofinal.smartvendingmachine.utils.NetworkHelper;
+import com.proyectofinal.smartvendingmachine.utils.ToastHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +52,9 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class BeginPurchaseActivity extends ListActivity {
     private static final String TRUE = "1";
@@ -71,16 +82,7 @@ public class BeginPurchaseActivity extends ListActivity {
 
     SelectedItemAdapter mAdapter = new SelectedItemAdapter(this, mItemsCompra);
 
-    @BindView(R.id.buttonStart)
-    Button startButton;
-    @BindView(R.id.buttonSend)
-    Button sendButton;
-    @BindView(R.id.buttonClear)
-    Button clearButton;
-    @BindView(R.id.buttonStop)
-    Button stopButton;
-    @BindView(R.id.editText)
-    EditText editText;
+
     //    @BindView(R.id.textViewDebugg)
     //    TextView textView;
     @BindView(R.id.textViewTotal)
@@ -93,7 +95,6 @@ public class BeginPurchaseActivity extends ListActivity {
     Button mConfirmarCompraButton;
     @BindView(R.id.cancelarCompraButton)
     Button mCancelarCompraButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,19 +136,15 @@ public class BeginPurchaseActivity extends ListActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Compra compra = armarCompra(mItemsCompra);
-                            postCompra(compra);
-                        } catch (Exception e) {
-                            Log.e(TAG, e.getMessage());
-                        }
-                    }
-                });
-                thread.start();
-                showCompraExitosaDialog("Exito");
+                Compra compra = armarCompra(mItemsCompra);
+                SweetAlertDialog pDialog = new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                try {
+                    postCompra(compra, pDialog);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 //todo: limpio el array mItemsCompra??
             }
@@ -167,10 +164,10 @@ public class BeginPurchaseActivity extends ListActivity {
 
     }
 
-    private void showCompraExitosaDialog(String text) {
+    private void showCompraExitosaDialog(String saldoActualizado) {
         SweetAlertDialog pDialog = new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.SUCCESS_TYPE);
         pDialog.setTitleText("Exito");
-        pDialog.setContentText("Muchas gracias por su compra!");
+        pDialog.setContentText("Muchas gracias por su compra! Su nuevo saldo es de : "+ saldoActualizado);
         pDialog.setConfirmText("Aceptar");
         pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
@@ -216,6 +213,8 @@ public class BeginPurchaseActivity extends ListActivity {
         return compra;
     }
 
+
+
     private long getMontoTotal(ArrayList<Item> itemsCompra) {
         Iterator<Item> it = itemsCompra.iterator();
         long montoTotal = 0;
@@ -227,41 +226,114 @@ public class BeginPurchaseActivity extends ListActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void postCompra(Compra compra) throws IOException, JSONException {
-        PostCompra postCompra = new PostCompra();
-        String response = postCompra.post(compra);
+    private void postCompra(Compra compra, final SweetAlertDialog procesandoCompraDialog) throws IOException, JSONException {
+        if (NetworkHelper.isNetworkAvailable(getSystemService(Context.CONNECTIVITY_SERVICE))) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    procesandoCompraDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    procesandoCompraDialog.setTitleText("Aguarde por favor...");
+                    procesandoCompraDialog.setCancelable(false);
+                    procesandoCompraDialog.show();
+                }
+            });
 
-        final JSONObject jsonResponse = new JSONObject(response);
+//            progressDialog = ProgressDialog.show(this, "", "Espere por favor...", true);
+            CompraService service = new CompraService();
+            PostCompra compraParser = new PostCompra();
+            String jsonCompra = compraParser.createJsonCompra(compra);
 
-        String responseText = "Success: " + jsonResponse.getString("success") + "\r\\\n" +
-                "Saldo Actualizado : " + jsonResponse.getString("saldoActualizado");
+            service.Comprar(Api.UrlSubmitCompra, jsonCompra, new Callback() {
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Fallo al conectarse con el servidor" + e.getMessage(), Toast.LENGTH_LONG);
+//                    if(progressDialog != null)
+//                        progressDialog.dismiss();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {procesandoCompraDialog.hide();  }
+                });
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        String responseStr = response.body().string();
+                        try {
+                            JSONObject jsonResponse = new JSONObject(responseStr);
+
+                            if(jsonResponse.getBoolean("success")){
+                                mItemsCompra.clear();
+                                final double saldoActualizado = jsonResponse.getDouble("saldoActualizado");
+                                ((ApplicationHelper) BeginPurchaseActivity.this.getApplication()).updateSaldo(saldoActualizado);
+                                usuarioRepo.UpdateSaldo(currentUser.getUserID(), saldoActualizado);
+                                ToastHelper.backgroundThreadShortToast(getApplicationContext(),saldoActualizado+"", Toast.LENGTH_SHORT);
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        procesandoCompraDialog.hide();
+                                        showCompraExitosaDialog("$"+saldoActualizado);
+                                    }
+                                });
+
+                            }else {
+                                ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Error", Toast.LENGTH_SHORT);
+                            }
+                        }catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+                        ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Respuesta del Servidor Incorrecta", Toast.LENGTH_SHORT);
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {procesandoCompraDialog.hide();  }
+                    });
+//                    if(progressDialog != null)
+//                        progressDialog.dismiss();
+                }
+            });
+        } else {
+            Toast.makeText(this, R.string.error_red_no_disponible, Toast.LENGTH_LONG).show();
+        }
 
 
-        boolean success = jsonResponse.getBoolean("success");
+
+
+
+       /////////////////////////////////////////////////
+        //PostCompra postCompra = new PostCompra();
+        //String response = postCompra.post(compra);
+
+        //final JSONObject jsonResponse = new JSONObject(response);
+
+        //String responseText = "Success: " + jsonResponse.getString("success") + "\r\\\n" +
+         //       "Saldo Actualizado : " + jsonResponse.getString("saldoActualizado");
 
         //Actualizo nuevo saldo
-        if (success) {
-            mItemsCompra.clear();
+//        if (success) {
 
-
-//            showCompraExitosaDialog();
+            //showCompraExitosaDialog();
             //ProgressDialog progressDialog  = ProgressDialog.show(BeginPurchaseActivity.this, "", "Espere por favor...", true);
-            double saldoActualizado = jsonResponse.getDouble("saldoActualizado");
-            ((ApplicationHelper) BeginPurchaseActivity.this.getApplication()).updateSaldo(saldoActualizado);
-            usuarioRepo.UpdateSaldo(currentUser.getUserID(), saldoActualizado);
-            //progressDialog.dismiss();
-
-        } else {
-            Log.v("BeginPuerchase", "Error en la compra. Por favor contactese con el administrador. " + jsonResponse.getString("response"));
-        }
+//            double saldoActualizado = jsonResponse.getDouble("saldoActualizado");
+//            ((ApplicationHelper) BeginPurchaseActivity.this.getApplication()).updateSaldo(saldoActualizado);
+//            usuarioRepo.UpdateSaldo(currentUser.getUserID(), saldoActualizado);
+//            progressDialog.dismiss();
+//
+//        } else {
+//            Log.v("BeginPuerchase", "Error en la compra. Por favor contactese con el administrador. " + jsonResponse.getString("response"));
+//        }
 
 //        textViewDebugg.setText(responseText.replace("\\\n", System.getProperty("line.separator")));
     }
 
     public void setUiEnabled(boolean bool) {
-        startButton.setEnabled(!bool);
-        sendButton.setEnabled(bool);
-        stopButton.setEnabled(bool);
+//        startButton.setEnabled(!bool);
+//        sendButton.setEnabled(bool);
+//        stopButton.setEnabled(bool);
 //        textViewDebugg.setEnabled(bool);
     }
 
@@ -416,10 +488,14 @@ public class BeginPurchaseActivity extends ListActivity {
         item.setDescripcion(jsonItem.getString("ProductoDescripcion"));
         item.setProductoID(Long.parseLong(jsonItem.getString("IdProducto"), 10));
         item.setIdBalanza(Long.parseLong(jsonItem.getString("IdBalanza")));
-        item.setCantidad(1);
+
+        item.setCantidad(Long.parseLong(jsonItem.getString("Cantidad")));
         item.setPrecioUnitario(Double.parseDouble(jsonItem.getString("PrecioUnitario")));
 
         String esDevolucion = jsonItem.getString("EsDevolucion");
+        String tipoTransaccion = jsonItem.getString("TipoTransaccion");
+
+        showToast("Tipo Transaccion: "+tipoTransaccion);
 
         if (mItemsCompra.size() == 0) {
             habilitarConfirmarCompra(true);
@@ -436,7 +512,7 @@ public class BeginPurchaseActivity extends ListActivity {
                             it.remove();
                             encontrado = TRUE;
                         } else {
-                            targetItem.setCantidad(targetItem.getCantidad() - 1);
+                            targetItem.setCantidad(targetItem.getCantidad() - item.getCantidad());
                         }
                     }
                 }
@@ -448,7 +524,7 @@ public class BeginPurchaseActivity extends ListActivity {
                 while (it.hasNext() && (encontrado == FALSE)) {
                     Item targetItem = it.next();
                     if ((targetItem.getProductoID() == item.getProductoID())) {
-                        targetItem.setCantidad(targetItem.getCantidad() + 1);
+                        targetItem.setCantidad(targetItem.getCantidad() + item.getCantidad());
                         encontrado = TRUE;
                     }
                 }
@@ -461,13 +537,13 @@ public class BeginPurchaseActivity extends ListActivity {
     }
 
     public void onClickSend(View view) {
-        String string = editText.getText().toString();
-        string.concat("\n");
-        try {
-            outputStream.write(string.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String string = editText.getText().toString();
+//        string.concat("\n");
+//        try {
+//            outputStream.write(string.getBytes());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 //        textViewDebugg.append("\nInformacion enviada: " + string + "\n");
     }
 
