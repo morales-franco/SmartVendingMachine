@@ -28,39 +28,34 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class SplashActivity extends AppCompatActivity {
-
-
+    UsuarioRepository usuarioRepo = null;
+    Usuario currentUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UsuarioRepository usuarioRepo = UsuarioRepository.GetInstance(getApplicationContext());
-        Usuario currentUser = usuarioRepo.GetCurrentuser();
+        usuarioRepo = UsuarioRepository.GetInstance(getApplicationContext());
+        currentUser = usuarioRepo.GetCurrentuser();
 
-
-        if(currentUser != null) {
-            getSaldoActual(currentUser.getUserID());
+        if(currentUser != null)
+        {
+            ((ApplicationHelper) this.getApplication()).setCurrentUser(currentUser);
+            this.getSaldoActual(currentUser.getUserID());
+        }else {
+            startLoginActivity();
+            finish();
         }
-
-        Intent intent = new Intent(this, LoginMainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
-    private void getSaldoActual(String userID){
+    private void getSaldoActual(String userID) {
         if (NetworkHelper.isNetworkAvailable(getSystemService(Context.CONNECTIVITY_SERVICE))) {
-            OkHttpClient client = new OkHttpClient();
-            UsuarioRepository usuarioRepo = UsuarioRepository.GetInstance(getApplicationContext());
-            Usuario currentUser = usuarioRepo.GetCurrentuser();
+            usuarioService service = new usuarioService();
 
-            String saldoJsonURL = Api.UrlGetSaldo+ "?userID=" + currentUser.getUserID();
-            Request request = new Request.Builder().url(saldoJsonURL).build();
+            service.GetSaldo(Api.UrlGetSaldo, userID, new Callback() {
 
-            Call call = client.newCall(request);
-            call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Fallo al conectarse con el servidor" + e.getMessage(), Toast.LENGTH_LONG);
+                    ToastHelper.backgroundThreadShortToast(getApplicationContext(), "Fallo al conectarse con el servidor" + e.getMessage(), Toast.LENGTH_LONG);
                 }
 
                 @Override
@@ -69,24 +64,33 @@ public class SplashActivity extends AppCompatActivity {
                         String responseStr = response.body().string();
                         try {
                             JSONObject jsonResponse = new JSONObject(responseStr);
-                            if(jsonResponse != null){
-                                double saldoActualizado = jsonResponse.getDouble("saldo");
-                                ((ApplicationHelper) SplashActivity.this.getApplication()).updateSaldo(saldoActualizado);
-                            }else {
-                                ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Respuesta del Servidor Incorrecta", Toast.LENGTH_SHORT);
-                            }
-                        }catch (JSONException e) {
+                            Double saldoActualizado = jsonResponse.getDouble("saldo");
+                            usuarioRepo.UpdateSaldo(currentUser.getUserID(), saldoActualizado);
+                            ((ApplicationHelper)SplashActivity.this.getApplication()).updateSaldo(saldoActualizado);
+                            startMainActivity();
+                            finish();
+
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
                     } else {
-                        ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Respuesta del Servidor Incorrecta", Toast.LENGTH_SHORT);
+                        ToastHelper.backgroundThreadShortToast(getApplicationContext(), "Respuesta del Servidor Incorrecta", Toast.LENGTH_SHORT);
                     }
-
                 }
             });
-        } else {
+        }else {
             Toast.makeText(this, R.string.error_red_no_disponible, Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void startMainActivity(){
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        startActivity(intent);
+    }
+
+    private void startLoginActivity(){
+        Intent intent = new Intent(this, LoginMainActivity.class);
+        startActivity(intent);
     }
 }
