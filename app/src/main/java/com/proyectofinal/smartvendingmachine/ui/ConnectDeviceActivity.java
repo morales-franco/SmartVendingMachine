@@ -104,15 +104,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
             mEnableBluetoothSwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mBluetoothAdapter.isEnabled()){
-                        mStatusBluetoothTextView.animate().translationY(0);
-                        mBluetoothAdapter.disable();
-                        showDisabled();
-                    }else{
-                        Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                        startActivityForResult(intent, 1000);
-
-                    }
+                    actualizarBluetoothSwitch();
 
                 }
             });
@@ -122,6 +114,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
             } else {
                 showDisabled();
             }
+
         }
 
         IntentFilter filter = new IntentFilter();
@@ -132,6 +125,18 @@ public class ConnectDeviceActivity extends AppCompatActivity {
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 
         registerReceiver(mReceiver, filter);
+    }
+
+    private void actualizarBluetoothSwitch() {
+        if (mBluetoothAdapter.isEnabled()){
+            mStatusBluetoothTextView.animate().translationY(0);
+            mBluetoothAdapter.disable();
+            showDisabled();
+        }else{
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(intent, 1000);
+
+        }
     }
 
     private void startBondDeviceActivity(Set<BluetoothDevice> bondedDevices) {
@@ -227,6 +232,8 @@ public class ConnectDeviceActivity extends AppCompatActivity {
                     showEnabled();
                     mStatusBluetoothTextView.animate().translationY(-50);
 
+                } else if(state == BluetoothAdapter.STATE_OFF){
+                    showDisabled();
                 }
             }
             else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {

@@ -91,6 +91,7 @@ public class BeginPurchaseActivity extends ListActivity {
     Button mConfirmarCompraButton;
     @BindView(R.id.cancelarCompraButton)
     Button mCancelarCompraButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,8 +114,8 @@ public class BeginPurchaseActivity extends ListActivity {
 
 
         //todo: borrar
-        showToast("Direccion: " + DEVICE_ADDRESS);
-        showToast("Nombre:  " + intent.getStringExtra("device_name"));
+//        showToast("Direccion: " + DEVICE_ADDRESS);
+//        showToast("Nombre:  " + intent.getStringExtra("device_name"));
 
         setUiEnabled(false);
         habilitarConfirmarCompra(false);
