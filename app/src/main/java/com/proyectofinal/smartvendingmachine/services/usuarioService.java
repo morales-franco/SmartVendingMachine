@@ -41,4 +41,17 @@ public class usuarioService {
         return call;
     }
 
+    public Call GetSaldo(String url, String userName, Callback callback) {
+        final MediaType text = MediaType.parse("text/x-markdown; charset=utf-8");
+        String postBody =  "?userID=" + userName;
+        String urlAux = url + postBody;
+        Request request = new Request.Builder()
+                .url(urlAux)
+                .get()
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(callback);
+        return call;
+    }
+
 }
