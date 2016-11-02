@@ -23,6 +23,7 @@ import com.proyectofinal.smartvendingmachine.models.Item;
 import com.proyectofinal.smartvendingmachine.models.Usuario;
 import com.proyectofinal.smartvendingmachine.repository.UsuarioRepository;
 import com.proyectofinal.smartvendingmachine.services.CompraService;
+import com.proyectofinal.smartvendingmachine.ui.MainMenuActivity;
 import com.proyectofinal.smartvendingmachine.utils.Api;
 import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
 import com.proyectofinal.smartvendingmachine.utils.NetworkHelper;
@@ -55,7 +56,6 @@ public class BeginPurchaseActivity extends ListActivity {
     private static final String TRUE = "1";
     private static final String FALSE = "0";
 
-    private static final String TAG = "BeginPurchaseActivity";
     private String DEVICE_ADDRESS = "";
     Usuario currentUser;
     UsuarioRepository usuarioRepo;
@@ -78,6 +78,9 @@ public class BeginPurchaseActivity extends ListActivity {
     SelectedItemAdapter mAdapter = new SelectedItemAdapter(this, mItemsCompra);
     BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
+    Handler mTimeoutHandler;
+    Runnable mTimeoutRunnable;
+    private final long mTimeoutTimer = 5000;
 
     //    @BindView(R.id.textViewDebugg)
     //    TextView textView;
@@ -129,20 +132,47 @@ public class BeginPurchaseActivity extends ListActivity {
             }
         }
 
+        mTimeoutHandler = new Handler();
+        mTimeoutRunnable = new Runnable() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Necesita mas tiempo?")
+                        .setContentText("\"Aceptar\" para continuar comprando. \"Finalizar\" para cerrar la transacción")
+                        .setConfirmText("Aceptar")
+                        .setCancelText("Finalizar")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                            }
+                        })
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                if(mItemsCompra.size()>0){
+                                    procesarCompra();
+                                    mItemsCompra.clear();
+                                }else{
+                                    cancelarCompra();
+                                }
+                                sDialog.cancel();
+                            }
+                        })
+                        .show();
+                Toast.makeText(BeginPurchaseActivity.this, "user inactive", Toast.LENGTH_SHORT).show();
+            }
+        };
+        startHandler();
+
         mConfirmarCompraButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                Compra compra = armarCompra(mItemsCompra);
-                SweetAlertDialog pDialog = new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-                try {
-                    postCompra(compra, pDialog);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                procesarCompra();
                 mItemsCompra.clear();
                 //todo: limpio el array mItemsCompra??
             }
@@ -151,32 +181,44 @@ public class BeginPurchaseActivity extends ListActivity {
         mCancelarCompraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    terminateConnection();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                finish();
+                cancelarCompra();
             }
         });
 
     }
 
+    private void cancelarCompra() {
+        try {
+            terminateConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finish();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void procesarCompra() {
+        Compra compra = armarCompra(mItemsCompra);
+        SweetAlertDialog pDialog = new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        try {
+            postCompra(compra, pDialog);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showCompraExitosaDialog(String saldoActualizado) {
         SweetAlertDialog pDialog = new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.SUCCESS_TYPE);
         pDialog.setTitleText("Exito");
-        pDialog.setContentText("Muchas gracias por su compra! Su nuevo saldo es de : "+ saldoActualizado);
+        pDialog.setContentText("Muchas gracias por su compra! Su nuevo saldo es de : " + saldoActualizado);
         pDialog.setConfirmText("Aceptar");
         pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sDialog) {
                 sDialog.dismissWithAnimation();
-                try {
-                    terminateConnection();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                finish();
+                cancelarCompra();
             }
         });
         pDialog.show();
@@ -213,7 +255,6 @@ public class BeginPurchaseActivity extends ListActivity {
     }
 
 
-
     private long getMontoTotal(ArrayList<Item> itemsCompra) {
         Iterator<Item> it = itemsCompra.iterator();
         long montoTotal = 0;
@@ -243,19 +284,16 @@ public class BeginPurchaseActivity extends ListActivity {
             String jsonCompra = compraParser.createJsonCompra(compra);
 
             service.Comprar(Api.UrlSubmitCompra, jsonCompra, new Callback() {
-
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    ToastHelper.backgroundThreadShortToast(getApplicationContext(),"Fallo al conectarse con el servidor" + e.getMessage(), Toast.LENGTH_LONG);
-//                    if(progressDialog != null)
-//                        progressDialog.dismiss();
+                    ToastHelper.backgroundThreadShortToast(getApplicationContext(), "Fallo al conectarse con el servidor" + e.getMessage(), Toast.LENGTH_LONG);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             procesandoCompraDialog.hide();
                             showErrorDialog("Error al conectarse con el servidor", "Por favor contáctese con el administrador.");
-                              }
-                });
+                        }
+                    });
                 }
 
                 @Override
@@ -265,22 +303,21 @@ public class BeginPurchaseActivity extends ListActivity {
                         try {
                             JSONObject jsonResponse = new JSONObject(responseStr);
 
-                            if(jsonResponse.getBoolean("success")){
+                            if (jsonResponse.getBoolean("success")) {
                                 mItemsCompra.clear();
                                 final double saldoActualizado = jsonResponse.getDouble("saldoActualizado");
                                 ((ApplicationHelper) BeginPurchaseActivity.this.getApplication()).updateSaldo(saldoActualizado);
                                 usuarioRepo.UpdateSaldo(currentUser.getUserID(), saldoActualizado);
-                                ToastHelper.backgroundThreadShortToast(getApplicationContext(),saldoActualizado+"", Toast.LENGTH_SHORT);
+                                ToastHelper.backgroundThreadShortToast(getApplicationContext(), saldoActualizado + "", Toast.LENGTH_SHORT);
 
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         procesandoCompraDialog.hide();
-                                        showCompraExitosaDialog("$"+saldoActualizado);
+                                        showCompraExitosaDialog("$" + saldoActualizado);
                                     }
                                 });
-
-                            }else {
+                            } else {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -289,7 +326,7 @@ public class BeginPurchaseActivity extends ListActivity {
                                     }
                                 });
                             }
-                        }catch (JSONException e) {
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
@@ -304,10 +341,10 @@ public class BeginPurchaseActivity extends ListActivity {
                     }
                     runOnUiThread(new Runnable() {
                         @Override
-                        public void run() {procesandoCompraDialog.hide();  }
+                        public void run() {
+                            procesandoCompraDialog.hide();
+                        }
                     });
-//                    if(progressDialog != null)
-//                        progressDialog.dismiss();
                 }
             });
         } else {
@@ -321,23 +358,20 @@ public class BeginPurchaseActivity extends ListActivity {
         }
 
 
-
-
-
-       /////////////////////////////////////////////////
+        /////////////////////////////////////////////////
         //PostCompra postCompra = new PostCompra();
         //String response = postCompra.post(compra);
 
         //final JSONObject jsonResponse = new JSONObject(response);
 
         //String responseText = "Success: " + jsonResponse.getString("success") + "\r\\\n" +
-         //       "Saldo Actualizado : " + jsonResponse.getString("saldoActualizado");
+        //       "Saldo Actualizado : " + jsonResponse.getString("saldoActualizado");
 
         //Actualizo nuevo saldo
 //        if (success) {
 
-            //showCompraExitosaDialog();
-            //ProgressDialog progressDialog  = ProgressDialog.show(BeginPurchaseActivity.this, "", "Espere por favor...", true);
+        //showCompraExitosaDialog();
+        //ProgressDialog progressDialog  = ProgressDialog.show(BeginPurchaseActivity.this, "", "Espere por favor...", true);
 //            double saldoActualizado = jsonResponse.getDouble("saldoActualizado");
 //            ((ApplicationHelper) BeginPurchaseActivity.this.getApplication()).updateSaldo(saldoActualizado);
 //            usuarioRepo.UpdateSaldo(currentUser.getUserID(), saldoActualizado);
@@ -486,7 +520,7 @@ public class BeginPurchaseActivity extends ListActivity {
                 textViewTotal.setTextColor(Color.parseColor("#FFDC2424"));
                 textViewMontoCompra.setTextColor(Color.parseColor("#FFDC2424"));
                 mConfirmarCompraButton.setEnabled(false);
-                showErrorDialog("Saldo Insuficiente","Por favor, devuelva el producto al exhibidor.");
+                showErrorDialog("Saldo Insuficiente", "Por favor, devuelva el producto al exhibidor.");
             }
         } else {
             textViewMontoCompra.setVisibility(View.INVISIBLE);
@@ -494,7 +528,7 @@ public class BeginPurchaseActivity extends ListActivity {
         }
     }
 
-    private void showErrorDialog(String title, String text){
+    private void showErrorDialog(String title, String text) {
         new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                 .setTitleText(title)
                 .setContentText(text)
@@ -515,7 +549,7 @@ public class BeginPurchaseActivity extends ListActivity {
         String esDevolucion = jsonItem.getString("EsDevolucion");
         String tipoTransaccion = jsonItem.getString("TipoTransaccion");
 
-        showToast("Tipo Transaccion: "+tipoTransaccion);
+        showToast("Tipo Transaccion: " + tipoTransaccion);
 
         if (mItemsCompra.size() == 0) {
             habilitarConfirmarCompra(true);
@@ -589,6 +623,20 @@ public class BeginPurchaseActivity extends ListActivity {
 
     public void onClickClear(View view) {
 //        textViewDebugg.setText("");
+    }
+
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        stopHandler();//stop first and then start
+        startHandler();
+    }
+
+    public void stopHandler() {
+        mTimeoutHandler.removeCallbacks(mTimeoutRunnable);
+    }
+
+    public void startHandler() {
+        mTimeoutHandler.postDelayed(mTimeoutRunnable, mTimeoutTimer);
     }
 
 }
