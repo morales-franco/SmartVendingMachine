@@ -30,13 +30,13 @@
         android:layout_height="wrap_content"
         android:text="@string/historial_de_compras"
         android:id="@+id/historialLabel"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:minHeight="50dp"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/saldoImageView"
-        android:layout_toStartOf="@+id/saldoImageView"/>
+        android:layout_toStartOf="@+id/saldoImageView"
+        android:textAlignment="center"
+        android:gravity="bottom"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -70,6 +70,6 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textSize="30sp" android:textColor="@color/colorPrimaryDark"
-        android:textAlignment="center"/>
+        android:hapticFeedbackEnabled="false" android:textAlignment="center"/>
 
 </RelativeLayout>
