@@ -36,7 +36,7 @@
         android:layout_toLeftOf="@+id/saldoImageView"
         android:layout_toStartOf="@+id/saldoImageView"
         android:textAlignment="center"
-        android:gravity="bottom"/>
+        android:gravity="bottom" android:textColor="@color/colorPrimaryDark"/>
 
     <TextView
         android:layout_width="wrap_content"

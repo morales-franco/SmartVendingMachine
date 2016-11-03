@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="@string/Bienvenidos"
         android:textAlignment="center"
-        android:textSize="25dp"
+        android:textSize="30sp"
         android:textIsSelectable="true"
         android:textColor="@color/colorPrimaryDark" />
 

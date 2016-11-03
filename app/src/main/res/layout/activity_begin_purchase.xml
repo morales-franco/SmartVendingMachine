@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Selección de Productos"
         android:id="@+id/menuPrincipalLabel"
-        android:textSize="24sp"
+        android:textSize="25sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
@@ -23,7 +23,7 @@
         android:textAlignment="center" android:layout_toLeftOf="@+id/saldoImageView"
         android:layout_toStartOf="@+id/saldoImageView"
         android:layout_alignBottom="@+id/saldoImageView"
-        android:gravity="center"/>
+        android:gravity="center" android:textColor="@color/colorPrimaryDark"/>
 
     <TextView
         android:layout_height="wrap_content"

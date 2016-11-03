@@ -21,8 +21,8 @@
         android:paddingStart="0dp"
         android:textOff="@string/enable_bluetooth"
         android:textOn="Desactivar Bluetooth"
-        android:textSize="18sp"
-        android:hint="Active el BY"/>
+        android:textSize="24sp"
+        android:hint="Active el BY" android:textColor="@color/colorPrimaryDark"/>
 
     <TextView
         android:id="@+id/statusBluetoothTextView"

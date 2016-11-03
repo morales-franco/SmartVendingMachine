@@ -24,7 +24,8 @@
         android:id="@+id/itemCantidadLabel" android:layout_toLeftOf="@+id/itemMontoLabel"
         android:layout_toStartOf="@+id/itemMontoLabel" android:textSize="24sp"
         android:layout_centerVertical="true"
-        android:paddingTop="24dp" android:paddingBottom="24dp" android:paddingRight="10dp"/>
+        android:paddingTop="24dp" android:paddingBottom="24dp" android:paddingRight="10dp"
+        android:textColor="@color/colorPrimaryDark"/>
     <TextView
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -35,6 +36,7 @@
         android:layout_centerVertical="true"
         android:paddingRight="10dp" android:layout_alignBottom="@+id/itemMontoLabel"
         android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
-        android:paddingBottom="24dp" android:paddingTop="24dp"/>
+        android:paddingBottom="24dp" android:paddingTop="24dp"
+        android:textColor="@color/colorPrimaryDark"/>
 
 </RelativeLayout>

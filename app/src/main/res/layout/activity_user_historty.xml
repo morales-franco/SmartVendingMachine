@@ -9,8 +9,6 @@
     tools:context="com.proyectofinal.smartvendingmachine.ui.UserHistortyActivity">
 
 
-
-
     <include layout="@layout/content_user_historty"/>
 
 </android.support.design.widget.CoordinatorLayout>
