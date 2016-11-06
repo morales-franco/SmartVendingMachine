@@ -60,8 +60,12 @@ public class BondDeviceAdapter extends BaseAdapter{
         }
 
         BluetoothDevice device	= mData.get(position);
+        String deviceName = device.getName();
+        if(deviceName.equals("HC-05")){
+            deviceName = "Exhibidor-01";
+        }
 
-        holder.deviceNameTextView.setText(device.getName());
+        holder.deviceNameTextView.setText(deviceName);
         holder.deviceAddressTextView.setText(device.getAddress());
         holder.bondButton.setText((device.getBondState() == BluetoothDevice.BOND_BONDED) ? "Desconectar" : "Sincronizar");
         holder.bondButton.setOnClickListener(new View.OnClickListener() {

@@ -61,7 +61,12 @@ public class ConnectDeviceAdapter extends BaseAdapter {
 
         BluetoothDevice device	= mData.get(position);
 
-        holder.deviceNameTextView.setText(device.getName());
+        String deviceName = device.getName();
+        if(deviceName.equals("HC-05")){
+            deviceName = "Exhibidor-01";
+        }
+
+        holder.deviceNameTextView.setText(deviceName);
         holder.deviceAddressTextView.setText(device.getAddress());
         holder.connectButton.setText("Conectar");
         holder.connectButton.setOnClickListener(new View.OnClickListener() {

@@ -82,7 +82,7 @@ public class BeginPurchaseActivity extends ListActivity {
 
     Handler mTimeoutHandler;
     Runnable mTimeoutRunnable;
-    private final long mTimeoutTimer = 5000;
+    private final long mTimeoutTimer = 30000;
 
     //    @BindView(R.id.textViewDebugg)
     //    TextView textView;
@@ -142,7 +142,7 @@ public class BeginPurchaseActivity extends ListActivity {
                 // TODO Auto-generated method stub
                 new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Necesita mas tiempo?")
-                        .setContentText("\"Aceptar\" para continuar comprando. \"Finalizar\" para cerrar la transacción")
+                        .setContentText("\"Aceptar\"  para continuar comprando. \"Finalizar\"  para cerrar la transacción")
                         .setConfirmText("Aceptar")
                         .setCancelText("Finalizar")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -165,7 +165,6 @@ public class BeginPurchaseActivity extends ListActivity {
                             }
                         })
                         .show();
-                Toast.makeText(BeginPurchaseActivity.this, "user inactive", Toast.LENGTH_SHORT).show();
             }
         };
         startHandler();
@@ -554,8 +553,6 @@ public class BeginPurchaseActivity extends ListActivity {
 
         TipoTransaccionHelper transaccionHelper = new TipoTransaccionHelper();
         Transaccion transaccion = transaccionHelper.GetTipo(tipoTransaccion);
-
-        showToast("Tipo Transaccion: " + tipoTransaccion);
 
         if (!transaccion.getEsError()) {
             if (mItemsCompra.size() == 0) {

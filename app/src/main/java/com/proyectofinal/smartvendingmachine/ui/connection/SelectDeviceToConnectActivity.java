@@ -34,6 +34,7 @@ public class SelectDeviceToConnectActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mAvailableDevicesList = getIntent().getExtras().getParcelableArrayList("device.list");
+
         mDevicesToConnectListView = (ListView) findViewById(R.id.lv_paired);
         mAdapter		= new ConnectDeviceAdapter(this);
         mAdapter.setData(mAvailableDevicesList);
