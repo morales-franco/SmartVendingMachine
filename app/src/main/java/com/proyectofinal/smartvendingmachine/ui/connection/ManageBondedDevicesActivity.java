@@ -49,7 +49,7 @@ public class ManageBondedDevicesActivity extends AppCompatActivity {
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
                     unpairDevice(device);
                 } else {
-                    showToast("Pairing...");
+                    showToast("Sincronizando...");
 
                     pairDevice(device);
                 }
@@ -101,9 +101,9 @@ public class ManageBondedDevicesActivity extends AppCompatActivity {
                 final int prevState	= intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
 
                 if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
-                    showToast("Paired");
+                    showToast("Sincronizado");
                 } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED){
-                    showToast("Unpaired");
+                    showToast("Desincronizar");
                 }
 
                 mBondDeviceAdapter.notifyDataSetChanged();

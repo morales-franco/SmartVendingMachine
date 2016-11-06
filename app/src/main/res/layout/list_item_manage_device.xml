@@ -14,12 +14,17 @@
         android:layout_alignParentRight="true"
         android:text="@string/list_item_text_pair" />
 
-    <ImageView
+    <TextView
+        android:id="@+id/deviceAddressTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" app:srcCompat="@drawable/background_splash"
-        android:layout_centerVertical="true" android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" android:id="@+id/imageView"
-        android:layout_marginRight="5dp"/>
+        android:layout_height="wrap_content"
+        android:text="@string/list_item_default_address"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@+id/deviceNameTextView"
+        android:layout_alignLeft="@+id/deviceNameTextView"
+        android:layout_alignStart="@+id/deviceNameTextView"
+        android:layout_alignRight="@+id/deviceNameTextView"
+        android:layout_alignEnd="@+id/deviceNameTextView"/>
     <TextView
         android:id="@+id/deviceNameTextView"
         android:layout_width="wrap_content"
@@ -27,15 +32,15 @@
         android:textSize="16sp"
         android:textColor="#000000"
         android:text="@string/list_item_default_device_name"
-        android:layout_alignTop="@+id/imageView" android:layout_toRightOf="@+id/imageView"
-        android:layout_toEndOf="@+id/imageView"/>
-    <TextView
-        android:id="@+id/deviceAddressTextView"
+        android:layout_alignTop="@+id/imageViewDeviceIcon"
+        android:layout_toRightOf="@+id/imageViewDeviceIcon"
+        android:layout_toEndOf="@+id/imageViewDeviceIcon" android:layout_marginLeft="27dp"
+        android:layout_marginStart="27dp"/>
+    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/list_item_default_address"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_alignBottom="@+id/imageView" android:layout_toRightOf="@+id/imageView"
-        android:layout_toEndOf="@+id/imageView"/>
+        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_block_black_24dp"
+        android:id="@+id/imageViewDeviceIcon"
+        android:layout_alignBottom="@+id/bondDeviceButton" android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

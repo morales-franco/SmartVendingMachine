@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.proyectofinal.smartvendingmachine.R;
@@ -53,6 +54,7 @@ public class ConnectDeviceAdapter extends BaseAdapter {
             holder.deviceNameTextView = (TextView) convertView.findViewById(R.id.deviceNameTextView);
             holder.deviceAddressTextView = (TextView) convertView.findViewById(R.id.deviceAddressTextView);
             holder.connectButton = (Button) convertView.findViewById(R.id.bondDeviceButton);
+            holder.deviceImage = (ImageView) convertView.findViewById(R.id.imageViewDeviceIcon);
 
             convertView.setTag(holder);
         } else {
@@ -64,6 +66,7 @@ public class ConnectDeviceAdapter extends BaseAdapter {
         String deviceName = device.getName();
         if(deviceName.equals("HC-05")){
             deviceName = "Exhibidor-01";
+            holder.deviceImage.setImageResource(R.mipmap.ic_launcher);
         }
 
         holder.deviceNameTextView.setText(deviceName);
@@ -85,6 +88,7 @@ public class ConnectDeviceAdapter extends BaseAdapter {
         TextView deviceNameTextView;
         TextView deviceAddressTextView;
         TextView connectButton;
+        ImageView deviceImage;
     }
 
     public interface OnPairButtonClickListener {
