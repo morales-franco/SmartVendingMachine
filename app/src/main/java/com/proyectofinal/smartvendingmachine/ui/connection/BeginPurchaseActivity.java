@@ -20,6 +20,7 @@ import com.proyectofinal.smartvendingmachine.R;
 import com.proyectofinal.smartvendingmachine.adapters.SelectedItemAdapter;
 import com.proyectofinal.smartvendingmachine.models.Compra;
 import com.proyectofinal.smartvendingmachine.models.Item;
+import com.proyectofinal.smartvendingmachine.models.Transaccion;
 import com.proyectofinal.smartvendingmachine.models.Usuario;
 import com.proyectofinal.smartvendingmachine.repository.UsuarioRepository;
 import com.proyectofinal.smartvendingmachine.services.CompraService;
@@ -27,6 +28,7 @@ import com.proyectofinal.smartvendingmachine.ui.MainMenuActivity;
 import com.proyectofinal.smartvendingmachine.utils.Api;
 import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
 import com.proyectofinal.smartvendingmachine.utils.NetworkHelper;
+import com.proyectofinal.smartvendingmachine.utils.TipoTransaccionHelper;
 import com.proyectofinal.smartvendingmachine.utils.ToastHelper;
 
 import org.json.JSONException;
@@ -153,10 +155,10 @@ public class BeginPurchaseActivity extends ListActivity {
                             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
-                                if(mItemsCompra.size()>0){
+                                if (mItemsCompra.size() > 0) {
                                     procesarCompra();
                                     mItemsCompra.clear();
-                                }else{
+                                } else {
                                     cancelarCompra();
                                 }
                                 sDialog.cancel();
@@ -547,45 +549,54 @@ public class BeginPurchaseActivity extends ListActivity {
         item.setPrecioUnitario(Double.parseDouble(jsonItem.getString("PrecioUnitario")));
 
         String esDevolucion = jsonItem.getString("EsDevolucion");
-        String tipoTransaccion = jsonItem.getString("TipoTransaccion");
+        int tipoTransaccion = Integer.parseInt(jsonItem.getString("TipoTransaccion"));
+
+
+        TipoTransaccionHelper transaccionHelper = new TipoTransaccionHelper();
+        Transaccion transaccion = transaccionHelper.GetTipo(tipoTransaccion);
 
         showToast("Tipo Transaccion: " + tipoTransaccion);
 
-        if (mItemsCompra.size() == 0) {
-            habilitarConfirmarCompra(true);
-            mExhibidorId = Long.parseLong(jsonItem.getString("IdExhibidor"), 10);
-            mItemsCompra.add(item);
-        } else {
-            Iterator<Item> it = mItemsCompra.iterator();
-            String encontrado = FALSE;
-            if (esDevolucion == TRUE) {
-                while (it.hasNext() && (encontrado.equals(FALSE))) {
-                    Item targetItem = it.next();
-                    if ((targetItem.getProductoID() == item.getProductoID())) {
-                        if (targetItem.getCantidad() <= 1) {
-                            it.remove();
-                            encontrado = TRUE;
-                        } else {
-                            targetItem.setCantidad(targetItem.getCantidad() - item.getCantidad());
+        if (!transaccion.getEsError()) {
+            if (mItemsCompra.size() == 0) {
+                habilitarConfirmarCompra(true);
+                mExhibidorId = Long.parseLong(jsonItem.getString("IdExhibidor"), 10);
+                mItemsCompra.add(item);
+            } else {
+                Iterator<Item> it = mItemsCompra.iterator();
+                String encontrado = FALSE;
+                if (esDevolucion == TRUE) {
+                    while (it.hasNext() && (encontrado.equals(FALSE))) {
+                        Item targetItem = it.next();
+                        if ((targetItem.getProductoID() == item.getProductoID())) {
+                            if (targetItem.getCantidad() <= 1) {
+                                it.remove();
+                                encontrado = TRUE;
+                            } else {
+                                targetItem.setCantidad(targetItem.getCantidad() - item.getCantidad());
+                            }
                         }
                     }
-                }
-                if (mItemsCompra.size() == 0) {
-                    habilitarConfirmarCompra(false);
-                }
-            } else {
-                habilitarConfirmarCompra(true);
-                while (it.hasNext() && (encontrado == FALSE)) {
-                    Item targetItem = it.next();
-                    if ((targetItem.getProductoID() == item.getProductoID())) {
-                        targetItem.setCantidad(targetItem.getCantidad() + item.getCantidad());
-                        encontrado = TRUE;
+                    if (mItemsCompra.size() == 0) {
+                        habilitarConfirmarCompra(false);
+                    }
+                } else {
+                    habilitarConfirmarCompra(true);
+                    while (it.hasNext() && (encontrado == FALSE)) {
+                        Item targetItem = it.next();
+                        if ((targetItem.getProductoID() == item.getProductoID())) {
+                            targetItem.setCantidad(targetItem.getCantidad() + item.getCantidad());
+                            encontrado = TRUE;
+                        }
+                    }
+                    if (encontrado == FALSE) {
+                        mItemsCompra.add(item);
                     }
                 }
-                if (encontrado == FALSE) {
-                    mItemsCompra.add(item);
-                }
             }
+        }else{
+
+            showErrorDialog("Error General", transaccion.getMensaje());
         }
 
     }
