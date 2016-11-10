@@ -123,6 +123,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
 
         registerReceiver(mReceiver, filter);
     }
@@ -275,7 +276,7 @@ public class ConnectDeviceActivity extends AppCompatActivity {
 
                 }
                 mAvailableBluetoothDeviceList.add(device);
-                showToast("Dispositivo encontrado: " + device.getName());
+//                showToast("Dispositivo encontrado: " + device.getName());
 
             } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
 

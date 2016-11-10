@@ -63,8 +63,11 @@ public class BondDeviceAdapter extends BaseAdapter{
         }
 
         BluetoothDevice device	= mData.get(position);
-        String deviceName = device.getName();
-        if(deviceName.equals("HC-05")){
+
+        String deviceName = "desconocido";
+        deviceName = device.getName();
+
+        if(isEqual(deviceName,"HC-05")){
             deviceName = "Exhibidor-01";
             holder.deviceImage.setImageResource(R.mipmap.ic_launcher);
         }
@@ -93,5 +96,9 @@ public class BondDeviceAdapter extends BaseAdapter{
 
     public interface OnBondButtonClickListener {
         void onBondButtonClick(int position);
+    }
+
+    public static boolean isEqual(Object o1, Object o2) {
+        return o1 == o2 || (o1 != null && o1.equals(o2));
     }
 }

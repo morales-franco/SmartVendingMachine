@@ -24,7 +24,6 @@ import com.proyectofinal.smartvendingmachine.models.Transaccion;
 import com.proyectofinal.smartvendingmachine.models.Usuario;
 import com.proyectofinal.smartvendingmachine.repository.UsuarioRepository;
 import com.proyectofinal.smartvendingmachine.services.CompraService;
-import com.proyectofinal.smartvendingmachine.ui.MainMenuActivity;
 import com.proyectofinal.smartvendingmachine.utils.Api;
 import com.proyectofinal.smartvendingmachine.utils.ApplicationHelper;
 import com.proyectofinal.smartvendingmachine.utils.NetworkHelper;
@@ -57,6 +56,8 @@ import okhttp3.Response;
 public class BeginPurchaseActivity extends ListActivity {
     private static final String TRUE = "1";
     private static final String FALSE = "0";
+
+    static boolean isActivityActive = false;
 
     private String DEVICE_ADDRESS = "";
     Usuario currentUser;
@@ -96,6 +97,20 @@ public class BeginPurchaseActivity extends ListActivity {
     Button mConfirmarCompraButton;
     @BindView(R.id.cancelarCompraButton)
     Button mCancelarCompraButton;
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        isActivityActive = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        isActivityActive = false;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,31 +155,33 @@ public class BeginPurchaseActivity extends ListActivity {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Necesita mas tiempo?")
-                        .setContentText("\"Aceptar\"  para continuar comprando. \"Finalizar\"  para cerrar la transacción")
-                        .setConfirmText("Aceptar")
-                        .setCancelText("Finalizar")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-                            }
-                        })
-                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                if (mItemsCompra.size() > 0) {
-                                    procesarCompra();
-                                    mItemsCompra.clear();
-                                } else {
-                                    cancelarCompra();
+                if (isActivityActive) {
+                    new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Necesita mas tiempo?")
+                            .setContentText("\"Aceptar\"  para continuar comprando. \"Finalizar\"  para cerrar la transacción")
+                            .setConfirmText("Aceptar")
+                            .setCancelText("Finalizar")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
                                 }
-                                sDialog.cancel();
-                            }
-                        })
-                        .show();
+                            })
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    if (mItemsCompra.size() > 0) {
+                                        procesarCompra();
+                                        mItemsCompra.clear();
+                                    } else {
+                                        cancelarCompra();
+                                    }
+                                    sDialog.cancel();
+                                }
+                            })
+                            .show();
+                }
             }
         };
         startHandler();
@@ -550,6 +567,8 @@ public class BeginPurchaseActivity extends ListActivity {
         String esDevolucion = jsonItem.getString("EsDevolucion");
         int tipoTransaccion = Integer.parseInt(jsonItem.getString("TipoTransaccion"));
 
+//        showToast("Tipo Transaccion: "+tipoTransaccion);
+
 
         TipoTransaccionHelper transaccionHelper = new TipoTransaccionHelper();
         Transaccion transaccion = transaccionHelper.GetTipo(tipoTransaccion);
@@ -591,9 +610,9 @@ public class BeginPurchaseActivity extends ListActivity {
                     }
                 }
             }
-        }else{
+        } else {
 
-            showErrorDialog("Error General", transaccion.getMensaje());
+            showErrorDialog("Error General ", transaccion.getMensaje());
         }
 
     }
@@ -626,6 +645,8 @@ public class BeginPurchaseActivity extends ListActivity {
         }
         setUiEnabled(false);
         deviceConnected = false;
+        mBluetoothAdapter.disable();
+        finish();
 //        textViewDebugg.append("\nFin compra\n");
     }
 
