@@ -1,9 +1,6 @@
 package com.proyectofinal.smartvendingmachine.models;
 
-/**
- * Created by franc on 6/6/2016.
- */
-//todo: va?
+
 public class Usuario {
     private  String mUserID;
     private  String mUserName;

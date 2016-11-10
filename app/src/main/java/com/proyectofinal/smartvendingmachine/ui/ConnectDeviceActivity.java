@@ -30,8 +30,6 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.proyectofinal.smartvendingmachine.R.drawable.ic_bluetooth_black_48dp;
-
 public class ConnectDeviceActivity extends AppCompatActivity {
 
     private ArrayList<BluetoothDevice> mBondedBluetoothDeviceList = new ArrayList<>();
@@ -173,13 +171,6 @@ public class ConnectDeviceActivity extends AppCompatActivity {
 
     private void showUnsupported() {
         mStatusBluetoothTextView.setText(R.string.bluetooth_unsopported_message);
-//        mStatusBluetoothTextView.animate().translationY(200);
-        //TODO: QUE HACEMOS ACA? SALIR DE LA APLICACION?
-        //mActivateBtn.setText("Enable");
-        //mActivateBtn.setEnabled(false);
-
-        //mPairedBtn.setEnabled(false);
-        //mScanBtn.setEnabled(false);
     }
 
     private void showEnabled() {

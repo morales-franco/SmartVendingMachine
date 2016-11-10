@@ -8,9 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -126,16 +126,9 @@ public class BeginPurchaseActivity extends ListActivity {
 
         setListAdapter(mAdapter);
 
-        //todo este scroll no va.
-//        textViewDebugg.setMovementMethod(new ScrollingMovementMethod());
-
         Intent intent = getIntent();
         DEVICE_ADDRESS = intent.getStringExtra("device_address");
 
-
-        //todo: borrar
-//        showToast("Direccion: " + DEVICE_ADDRESS);
-//        showToast("Nombre:  " + intent.getStringExtra("device_name"));
 
         setUiEnabled(false);
         habilitarConfirmarCompra(false);
@@ -154,7 +147,6 @@ public class BeginPurchaseActivity extends ListActivity {
 
             @Override
             public void run() {
-                // TODO Auto-generated method stub
                 if (isActivityActive) {
                     new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("Necesita mas tiempo?")
@@ -192,7 +184,6 @@ public class BeginPurchaseActivity extends ListActivity {
             public void onClick(View v) {
                 procesarCompra();
                 mItemsCompra.clear();
-                //todo: limpio el array mItemsCompra??
             }
         });
 
@@ -220,9 +211,7 @@ public class BeginPurchaseActivity extends ListActivity {
         SweetAlertDialog pDialog = new SweetAlertDialog(BeginPurchaseActivity.this, SweetAlertDialog.PROGRESS_TYPE);
         try {
             postCompra(compra, pDialog);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
     }
@@ -244,7 +233,7 @@ public class BeginPurchaseActivity extends ListActivity {
     }
 
     private void mostrarSaldo(Double saldo) {
-        saldoTextView.setText("$" + saldo);
+        saldoTextView.setText("$ " + saldo);
     }
 
     private void habilitarConfirmarCompra(boolean b) {
@@ -526,8 +515,8 @@ public class BeginPurchaseActivity extends ListActivity {
     }
 
     private void mostrarTotalActualizando(boolean b) {
-        if (b == true) {
-            textViewMontoCompra.setText("$" + getMontoTotal(mItemsCompra));
+        if (b) {
+            textViewMontoCompra.setText("$ " + getMontoTotal(mItemsCompra));
             textViewMontoCompra.setVisibility(View.VISIBLE);
             textViewTotal.setVisibility(View.VISIBLE);
             if (mSaldoUsuario >= getMontoTotal(mItemsCompra)) {
@@ -567,11 +556,8 @@ public class BeginPurchaseActivity extends ListActivity {
         String esDevolucion = jsonItem.getString("EsDevolucion");
         int tipoTransaccion = Integer.parseInt(jsonItem.getString("TipoTransaccion"));
 
-//        showToast("Tipo Transaccion: "+tipoTransaccion);
-
-
         TipoTransaccionHelper transaccionHelper = new TipoTransaccionHelper();
-        Transaccion transaccion = transaccionHelper.GetTipo(tipoTransaccion);
+        Transaccion transaccion = TipoTransaccionHelper.GetTipo(tipoTransaccion);
 
         if (!transaccion.getEsError()) {
             if (mItemsCompra.size() == 0) {

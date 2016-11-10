@@ -3,14 +3,8 @@ package com.proyectofinal.smartvendingmachine.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.StringDef;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,12 +26,7 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.HttpUrl;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LoginMainActivity extends AppCompatActivity {
@@ -143,8 +132,6 @@ public class LoginMainActivity extends AppCompatActivity {
 
     private void startMainActivity(){
         Intent intent = new Intent(this, MainMenuActivity.class);
-        //TODO: Aca se mandarian los extra que haya que mandarle a la main activity
-        //intent.putExtra(getString(R.string.key_name),name);
         startActivity(intent);
     }
 
